@@ -124,7 +124,7 @@ class Unit
         $classType = gettype($value);
         
         if ($classType === 'string' && !class_exists($classType)) {
-            $symbolMap = static::buildSymbolMap();
+            $symbolMap = static::_buildSymbolMap();
 
             foreach ($symbolMap As $type => $typeSymbols) {
                 // If this method is not called from the Unit class,

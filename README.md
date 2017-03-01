@@ -123,6 +123,13 @@ A couple of things are important when submitting a Pull Request:
 - Use the method of implementation as described below
 
 ### Implementing Unit's and Unit Type's
+#### Clone this repository
+```
+git clone https://github.com/pimlie/php-unit-conversion
+cd php-unit-conversion
+composer install
+```
+
 #### Adding a new unit type
 Start by defining a `TYPE_XXX` const in `Unit.php`. Give it the next/unique number of the TYPE_ sequence.
 
@@ -138,8 +145,7 @@ We prefer the base unit to be a unit from the metric system. This way we can eas
 unit and only implement a `PhpUnitConversion\Prefix\Metric\<SI_Prefix>` interface. E.g. the implementation of `Mass\MilliGram` is:
 ```php 
 class MilliGram extends Gram implements Metric, Milli
-{
-}
+{}
 ```
 See the comment above in [Basic Usage](#basic-usage) about the `FACTOR` constant. You should not set a `FACTOR` on the `BASE_UNIT`, otherwise the above implementation
 will fail because the interface `Prefix\Metric\Milli` cannot overwrite an already defined class constant.
@@ -212,3 +218,13 @@ class Yard extends InternationalYard implements Imperial, USC
 Please also include tests for your new units or unit types.
 
 At the least tests should be added for conversion to the base unit.
+
+#### Running tests
+You can run tests either either by running:
+```
+composer test
+```
+or
+```
+vendor/bin/phpunit
+```

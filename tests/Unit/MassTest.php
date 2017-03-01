@@ -8,7 +8,7 @@ use PhpUnitConversion\Unit\Mass;
 
 class MassTest extends TestCase
 {
-    /*public function testFromPicoGram()
+    public function testFromPicoGram()
     {
         $massUnit = new Mass\NanoGram(0.21);
         $this->assertEquals('210 pg', Mass\PicoGram::from($massUnit)->format(0));
@@ -193,7 +193,7 @@ class MassTest extends TestCase
         
         $this->assertInstanceOf(Mass\MilliGram::class, $massUnit);
     }
-    /**/
+    
     public function testAddition()
     {
         $massUnit = new Mass\Gram(580);
