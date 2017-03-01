@@ -2,10 +2,11 @@
     "name":        "php-unit-conversion/php-unit-conversion",
     "description": "A fully PSR-4 compatible PHP library for converting between standard units of measure.",
     "keywords": [
-         "measurements", "data", "conversion"
+         "measurement", "unit", "conversion"
      ],
     "homepage":    "https://github.com/pimlie/php-unit-conversion",
     "license": "MIT",
+    "version": "0.0.1",
     "type": "library",
     "authors": [
         {
