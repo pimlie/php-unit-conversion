@@ -1,0 +1,6 @@
+.git
+composer.lock
+composer.phar
+build
+vendor
+node_modules
