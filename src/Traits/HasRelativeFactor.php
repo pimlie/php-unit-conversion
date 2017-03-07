@@ -30,9 +30,9 @@ trait HasRelativeFactor
         return $value;
     }
     
-    protected function toBaseValue($value)
+    protected function toBaseValue()
     {
-        $baseValue = $value / self::getFactor();
+        $baseValue = $this->value / self::getFactor();
         
         $addition = self::getAddition();
         if ($addition !== false) {

@@ -29,8 +29,9 @@ trait HasFactor
         return $value;
     }
     
-    protected function toBaseValue($value)
+    protected function toBaseValue()
     {
+        $value = $this->value;
         $value*= self::getFactor();
         
         $addition = self::getAddition();
