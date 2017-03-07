@@ -3,7 +3,7 @@ namespace PhpUnitConversion\Unit\Time;
 
 use PhpUnitConversion\Unit\Time;
 
-class Year extends Time
+class JulianYear extends Time
 {
     const FACTOR = 31557600;
     

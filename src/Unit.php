@@ -2,11 +2,15 @@
 namespace PhpUnitConversion;
 
 use InvalidArgumentException;
+use PhpUnitConversion\System;
+use PhpUnitConversion\Exception\InvocationException;
 use PhpUnitConversion\Exception\UnsupportedUnitException;
 use PhpUnitConversion\Exception\UnsupportedConversionException;
 
 class Unit
 {
+    // If we get more then 63 TYPE constants we need
+    // to adjust the shift 6 in __invoke && ::from
     const TYPE_MASS = 1;
     const TYPE_LENGTH = 2;
     const TYPE_AREA = 3;
@@ -16,6 +20,7 @@ class Unit
     protected $value;
 
     static protected $typeMap;
+    static protected $factorMap;
     static protected $symbolMap;
 
     public function __construct($value = null, $convertFromBaseUnit = false)
@@ -87,21 +92,21 @@ class Unit
         return $value;
     }
     
-    protected function toBaseValue()
+    protected function toBaseValue($value = null)
     {
-        $baseValue = $this->value;
+        if($value === null) $value = $this->value;
 
         $factor = $this->getFactor();
         if ($factor !== false) {
-            $baseValue*= $factor;
+            $value*= $factor;
         }
 
         $addition = $this->getAddition();
         if ($addition !== false) {
-            $baseValue+= $addition;
+            $value+= $addition;
         }
 
-        return $baseValue;
+        return $value;
     }
     
     protected function toBaseUnit()
@@ -222,6 +227,56 @@ class Unit
         return false;
     }
     
+    /**
+     * Finds the nearest unit to a given value
+     *
+     * Returns a new $unitClass instance which is euqal to the given value 
+     * but with a value closest to 1
+     *
+     * @param mixed $value An integer, double or Unit object
+     *
+     * @return Returns an Unit object 
+     */
+    public static function nearest($value, $system = null)
+    {
+        if (self::class === static::class) {
+            throw new InvocationException([self::class]);
+        }
+
+        $factorMap = static::_buildFactorMap();
+        
+        $classType = gettype($value);
+        
+        if ($classType === 'integer' || $classType === 'double') {
+            $baseValue = $value;
+        } else if ($classType === 'object' && $value instanceof Unit) {
+            $baseValue = $value->toBaseValue();
+        } else {
+            throw new InvalidArgumentException('$value should be an integer, double or instance of Unit');
+        }
+
+        if (is_array($factorMap[static::TYPE])) {
+            foreach ($factorMap[static::TYPE] As $unitClass => $unitBaseValue) {
+                if ($system === null || (new $unitClass) instanceof $system) {
+                    if ($baseValue < 0.9 * $unitBaseValue) {
+                        if (!isset($lastUnitClass)) $lastUnitClass = $unitClass;
+                        
+                        if ($classType === 'object' && $classType instanceof Unit) {
+                            return $value->to($lastUnitClass);
+                        } else {
+                            $unitObject = new $lastUnitClass;
+                            $baseClass = $unitObject::BASE_UNIT;
+                            
+                            return (new $baseClass($baseValue))->to($unitObject);
+                        }
+                    }
+
+                    $lastUnitClass = $unitClass;
+                }
+            }
+        }
+    }
+
     public function add()
     {
         $numArgs = func_num_args();
@@ -291,47 +346,72 @@ class Unit
 
     private static function _buildTypeMap($rebuild = false)
     {
-        if (!$rebuild && isset(static::$typeMap)) {
-            return static::$typeMap;
-        }
-        
-        static::$typeMap = [];
-        foreach (glob(__DIR__.'/Unit/*.php') As $unitFile) {
-            $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
-            
-            if (class_exists($unitClass)) {
-                static::$typeMap[$unitClass::TYPE] =$unitClass;
+        if ($rebuild || !isset(static::$typeMap)) {
+            static::$typeMap = [];
+            foreach (glob(__DIR__.'/Unit/*.php') As $unitFile) {
+                $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
+                
+                if (class_exists($unitClass)) {
+                    static::$typeMap[$unitClass::TYPE] = $unitClass;
+                }
             }
         }
 
         return static::$typeMap;
     }
 
+
+    private static function _buildFactorMap($rebuild = false)
+    {
+        if ($rebuild || !isset(static::$factorMap)) {
+            static::$factorMap = [];
+            
+            foreach (glob(__DIR__ .'/Unit/*/*.php') As $unitFile) {
+                $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
+    
+                if (class_exists($unitClass)) {
+                    $unitObject = new $unitClass(1);
+                    
+                    if (!isset(static::$factorMap[$unitObject::TYPE])) {
+                        static::$factorMap[$unitObject::TYPE] = [];
+                    }
+
+                    static::$factorMap[$unitObject::TYPE][$unitClass] = $unitObject->toBaseValue();
+                }
+            }
+
+            foreach (static::$factorMap As $unitType => $values) {
+                asort(static::$factorMap[$unitType]);
+            }
+        }
+
+        return static::$factorMap;
+    }
+
     private static function _buildSymbolMap($rebuild = false)
     {
-        if (!$rebuild && isset(static::$symbolMap)) {
-            return static::$symbolMap;
-        }
-        
-        static::$symbolMap = [];
-        foreach (glob(__DIR__ .'/Unit/*/*.php') As $unitFile) {
-            $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
+        if ($rebuild || !isset(static::$symbolMap)) {
+            static::$symbolMap = [];
 
-            if (class_exists($unitClass)) {
-                $unitObject = new $unitClass;
-                
-                if (!isset(static::$symbolMap[$unitObject::TYPE])) {
-                    static::$symbolMap[$unitObject::TYPE] = [];
-                }
-
-                $symbol = $unitObject->getSymbol();
-                
-                if (!empty($symbol)) {
-                    static::$symbolMap[$unitObject::TYPE][$symbol] = $unitClass;
+            foreach (glob(__DIR__ .'/Unit/*/*.php') As $unitFile) {
+                $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
+    
+                if (class_exists($unitClass)) {
+                    $unitObject = new $unitClass;
+                    
+                    if (!isset(static::$symbolMap[$unitObject::TYPE])) {
+                        static::$symbolMap[$unitObject::TYPE] = [];
+                    }
+    
+                    $symbol = $unitObject->getSymbol();
+                    
+                    if (!empty($symbol)) {
+                        static::$symbolMap[$unitObject::TYPE][$symbol] = $unitClass;
+                    }
                 }
             }
         }
-        
+
         return static::$symbolMap;
     }
 

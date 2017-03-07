@@ -42,15 +42,15 @@ var_dump((new Mass\Gram(2))->getFactor());
 use PhpUnitConversion\Unit;
 use PhpUnitConversion\Unit\Mass;
 
-/* If you have an instantiated unit, you can convert to a new unit by calling the static `from` method
- * on the unit you want to convert to 
+/* If you have an instantiated unit, you can convert to a new unit by calling the 
+ * static `from` method on the unit you want to convert to 
  */
 $grams = new Mass\Gram(21);
 echo Mass\PennyWeight::from($grams)->format();
 // 13.503 dwt
 
-/* You can also call the `to` method on the unit object and pass the class name of the unit you want
- * to convert to 
+/* You can also call the `to` method on the unit object and pass the class name of 
+ * the unit you want to convert to 
  */
 $grams = new Mass\Gram(21);
 $milliGram = $massUnit->to(Mass\MilliGram::class);
@@ -89,6 +89,36 @@ var_dump($milliGrams instanceof Mass\MilliGram::class)
 // true
 ```
 
+## Find the nearest unit type
+If you have a value and want to automatically convert it to the unit type which value is closest to 1, you can use the static `nearest` method.
+The `nearest` method should only be called on a Unit Type class.
+
+```php
+use PhpUnitConversion\Unit\Mass;
+$value = rand(0, 1E13);
+$unit = Mass::nearest($value);
+echo $unit->format();
+// 3.471 long cwt
+```
+
+If you only want units from a specific measurement system, you can pass a System class name as second parameter
+```php
+use PhpUnitConversion\System;
+use PhpUnitConversion\Unit\Mass;
+
+$gram = Mass\Gram(850);
+
+/* Only Units from the Metric system */
+$unit = Mass::nearest($value, System\Metric::class);
+echo $unit->format();   
+// 8.500 hg
+
+/* Only Units from the USC / Imperial system */
+$unit = Mass::nearest($value, System\USC::class);
+echo $unit->format();   
+// 1.874 lb
+```
+
 ## Storing values with their type
 
 If you want to store values in e.g. a database, you often have to store two things: the value itself and the unit type. As all our Units have a TYPE constant 
@@ -102,7 +132,7 @@ echo $kiloGrams();
 ```
 The returned value is the result of first converting the value to the base value, then a shift left by 6 and add the TYPE constant.
 
-You can use the static from method to convert to a base unit instance again:
+You can use the static `from` method to convert to a base unit instance again:
 ```php
 use PhpUnitConversion\Unit;
 $grams = Unit::from(64001);
