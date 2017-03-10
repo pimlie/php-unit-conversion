@@ -15,10 +15,10 @@ composer install
 ```
 
 #### Adding a new unit type
-Start by defining a `TYPE_XXX` const in `Unit.php`. Give it the next/unique number of the TYPE_ sequence.
+Start by defining a `XXX` const in `UnitType.php`. Give it the next/unique number in the sequence.
 
 Next create a new unit type class in file `Unit/XXX.php`, this will hold the type description. All units belonging to this unit type 
-should be (directly or indidrectly) extended from this class. Make sure you add `const TYPE = Unit::TYPE_XXX`. Also set the `const BASE_UNIT`
+should be (directly or indidrectly) extended from this class. Make sure you add `const TYPE = UnitType::XXX`. Also set the `const BASE_UNIT`
 to the class of your base unit. Please choose your base unit logically, units from the metric system have preference over the 
 imperial / usc systems.
 
