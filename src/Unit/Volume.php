@@ -2,10 +2,11 @@
 namespace PhpUnitConversion\Unit;
 
 use PhpUnitConversion\Unit;
+use PhpUnitConversion\UnitType;
 
 class Volume extends Unit
 {
-    const TYPE = Unit::TYPE_VOLUME;
+    const TYPE = UnitType::VOLUME;
     
     const BASE_UNIT = Volume\CubicMeter::class;
 }

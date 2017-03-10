@@ -2,10 +2,11 @@
 namespace PhpUnitConversion\Unit;
 
 use PhpUnitConversion\Unit;
+use PhpUnitConversion\UnitType;
 
 class Length extends Unit
 {
-    const TYPE = Unit::TYPE_LENGTH;
+    const TYPE = UnitType::LENGTH;
     
     const BASE_UNIT = Length\Meter::class;
 }

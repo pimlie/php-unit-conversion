@@ -9,14 +9,6 @@ use PhpUnitConversion\Exception\UnsupportedConversionException;
 
 class Unit
 {
-    // If we get more then 63 TYPE constants we need
-    // to adjust the shift 6 in __invoke && ::from
-    const TYPE_MASS = 1;
-    const TYPE_LENGTH = 2;
-    const TYPE_AREA = 3;
-    const TYPE_VOLUME = 4;
-    const TYPE_TIME = 5;
-
     protected $value;
 
     static protected $typeMap;
