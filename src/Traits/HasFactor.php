@@ -33,13 +33,13 @@ trait HasFactor
     {
         if($value === null) $value = $this->value;
 
-        $value*= self::getFactor();
-        
         $addition = self::getAddition();
         if ($addition !== false) {
             $value+= $addition;
         }
 
+        $value*= self::getFactor();
+        
         return $value;
     }
 }

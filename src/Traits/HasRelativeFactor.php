@@ -24,7 +24,7 @@ trait HasRelativeFactor
         
         $addition = self::getAddition();
         if ($addition !== false) {
-            $value+= $addition;
+            $value-= $addition;
         }
         
         return $value;
@@ -34,12 +34,12 @@ trait HasRelativeFactor
     {
         if($value === null) $value = $this->value;
         
-        $baseValue = $value / self::getFactor();
-        
         $addition = self::getAddition();
         if ($addition !== false) {
-            $value-= $addition;
+            $value+= $addition;
         }
+        
+        $baseValue = $value / self::getFactor();
         
         return parent::toBaseValue($baseValue);
     }
