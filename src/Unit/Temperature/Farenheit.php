@@ -6,7 +6,7 @@ use PhpUnitConversion\System\USC;
 use PhpUnitConversion\Unit\Temperature;
 use PhpUnitConversion\Traits\HasFactor;
 
-class Farenheight extends Celsius
+class Farenheit extends Celsius
 {
     use HasFactor;
     
@@ -14,5 +14,5 @@ class Farenheight extends Celsius
     const ADDITION = -32;
     
     const SYMBOL = '°F';
-    const LABEL = 'farenheight';
+    const LABEL = 'farenheit';
 }

@@ -6,7 +6,7 @@ use PhpUnitConversion\System\USC;
 use PhpUnitConversion\Unit\Temperature;
 use PhpUnitConversion\Traits\HasRelativeFactor;
 
-class Rankine extends Farenheight
+class Rankine extends Farenheit
 {
     use HasRelativeFactor;
     
