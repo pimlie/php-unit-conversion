@@ -6,7 +6,7 @@ use PhpUnitConversion\System\USC;
 use PhpUnitConversion\Unit\Temperature;
 use PhpUnitConversion\Traits\HasFactor;
 
-class Farenheit extends Celsius
+class Fahrenheit extends Celsius
 {
     use HasFactor;
     
