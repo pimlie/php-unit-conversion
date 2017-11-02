@@ -157,11 +157,12 @@ class Unit
                     continue;
                 }
 
+                // make use of php's type juggling to find symbol
+                $numberPart = (float)$value;
+                $symbolPart = trim(str_replace($numberPart, '', $value));
                 foreach ($typeSymbols As $symbol => $class) {
-                    $len = strlen($symbol) + 1;
-
-                    if (substr_compare($value, ' '.$symbol, -$len, $len) === 0) {
-                        return new $class(substr($value, 0, -$len));
+                    if ($symbolPart === $symbol) {
+                        return new $class($numberPart);
                     }
                 }
             }
