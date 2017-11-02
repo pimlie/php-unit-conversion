@@ -6,7 +6,6 @@
      ],
     "homepage":    "https://github.com/pimlie/php-unit-conversion",
     "license": "MIT",
-    "version": "0.0.1",
     "type": "library",
     "authors": [
         {
