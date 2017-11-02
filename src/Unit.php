@@ -135,8 +135,9 @@ class Unit
         $classType = gettype($value);
         
         if ($classType === 'integer' || $classType === 'double') {
-            $type = $value & 63;
-            $value = $value >> 6;
+            $intValue = (int)$value;
+            $type = $intValue & 63;
+            $value = ($intValue >> 6) + ($value - $intValue);
             
             $typeMap = static::_buildTypeMap();
             
@@ -410,7 +411,8 @@ class Unit
 
     public function __invoke()
     {
-        return ($this->toBaseValue() << 6) + static::TYPE;
+        $intBase = (int)$this->toBaseValue();
+        return ($intBase << 6) + static::TYPE + ($this->toBaseValue() - $intBase);
     }
 
     public function __toString()
