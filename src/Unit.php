@@ -14,6 +14,7 @@ class Unit
     static protected $typeMap;
     static protected $factorMap;
     static protected $symbolMap;
+    static protected $labelMap;
 
     public function __construct($value = null, $convertFromBaseUnit = false)
     {
@@ -65,7 +66,20 @@ class Unit
         }
         return $symbol;
     }
-    
+
+    public function getLabel()
+    {
+        $label = '';
+        if (defined('static::LABEL') && !empty(static::LABEL)) {
+            if ($this instanceof \PhpUnitConversion\Prefix) {
+                $label = static::PREFIX_LABEL . static::LABEL;
+            } else {
+                $label = static::LABEL;
+            }
+        }
+        return $label;
+    }
+
     protected function fromBaseValue($baseValue)
     {
         $value = $baseValue;
@@ -149,8 +163,11 @@ class Unit
             
             throw new InvalidArgumentException();
         }else if ($classType === 'string' && !class_exists($classType)) {
-            $symbolMap = static::_buildSymbolMap();
+            // make use of php's type juggling to find symbol
+            $numberPart = (float)$value;
+            $symbolPart = trim(str_replace($numberPart, '', $value));
 
+            $symbolMap = static::_buildSymbolMap();
             foreach ($symbolMap As $type => $typeSymbols) {
                 // If this method is not called from the Unit class,
                 // then skip all other unit types
@@ -163,6 +180,21 @@ class Unit
                 $symbolPart = trim(str_replace($numberPart, '', $value));
                 foreach ($typeSymbols As $symbol => $class) {
                     if ($symbolPart === $symbol) {
+                        return new $class($numberPart);
+                    }
+                }
+            }
+
+            $labelMap = static::_buildLabelMap();
+            foreach ($labelMap As $type => $typeLabels) {
+                // If this method is not called from the Unit class,
+                // then skip all other unit types
+                if (static::class !== self::class && static::TYPE !== $type) {
+                    continue;
+                }
+
+                foreach ($typeLabels As $label => $class) {
+                    if ($symbolPart === $label) {
                         return new $class($numberPart);
                     }
                 }
@@ -407,6 +439,32 @@ class Unit
         }
 
         return static::$symbolMap;
+    }
+
+    private static function _buildLabelMap($rebuild = false)
+    {
+        if ($rebuild || !isset(static::$labelMap)) {
+            static::$labelMap = [];
+            foreach (glob(__DIR__ .'/Unit/*/*.php') As $unitFile) {
+                $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
+
+                if (class_exists($unitClass)) {
+                    $unitObject = new $unitClass;
+
+                    if (!isset(static::$labelMap[$unitObject::TYPE])) {
+                        static::$labelMap[$unitObject::TYPE] = [];
+                    }
+
+                    $label = $unitObject->getLabel();
+
+                    if (!empty($label)) {
+                        static::$labelMap[$unitObject::TYPE][$label] = $unitClass;
+                    }
+                }
+            }
+        }
+
+        return static::$labelMap;
     }
 
     public function __invoke()
