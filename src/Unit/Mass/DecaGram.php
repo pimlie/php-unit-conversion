@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Mass;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Deca;
 
-class DecaGram extends Gram implements Metric, Deca
+class DecaGram extends Gram implements Metric
 {
-    
+    const FACTOR = 1E1;
+
+    const SYMBOL = 'dag';
+    const LABEL = 'decagram';
 }

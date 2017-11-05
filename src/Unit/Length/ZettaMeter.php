@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Length;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Zetta;
 
-class ZettaMeter extends Meter implements Metric, Zetta
+class ZettaMeter extends Meter implements Metric
 {
-    
+    const FACTOR = 1E21;
+
+    const SYMBOL = 'Zm';
+    const LABEL = 'zettameter';
 }

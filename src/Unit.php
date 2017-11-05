@@ -58,11 +58,7 @@ class Unit
     {
         $symbol = '';
         if (defined('static::SYMBOL') && !empty(static::SYMBOL)) {
-            if ($this instanceof \PhpUnitConversion\Prefix) {
-                $symbol = static::PREFIX_SYMBOL . static::SYMBOL;
-            } else {
-                $symbol = static::SYMBOL;
-            }
+            $symbol = static::SYMBOL;
         }
         return $symbol;
     }
@@ -71,11 +67,7 @@ class Unit
     {
         $label = '';
         if (defined('static::LABEL') && !empty(static::LABEL)) {
-            if ($this instanceof \PhpUnitConversion\Prefix) {
-                $label = static::PREFIX_LABEL . static::LABEL;
-            } else {
-                $label = static::LABEL;
-            }
+            $label = static::LABEL;
         }
         return $label;
     }

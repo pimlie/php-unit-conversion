@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Mass;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Zetta;
 
-class ZettaGram extends Gram implements Metric, Zetta
+class ZettaGram extends Gram implements Metric
 {
-    
+    const FACTOR = 1E21;
+
+    const SYMBOL = 'Zg';
+    const LABEL = 'zettagram';
 }

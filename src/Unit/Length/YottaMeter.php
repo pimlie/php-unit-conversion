@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Length;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Yotta;
 
-class YottaMeter extends Meter implements Metric, Yotta
+class YottaMeter extends Meter implements Metric
 {
-    
+    const FACTOR = 1E24;
+
+    const SYMBOL = 'Ym';
+    const LABEL = 'yottameter';
 }

@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Volume;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Tera;
 
-class CubicTeraMeter extends CubicMeter implements Metric, Tera
+class CubicTeraMeter extends CubicMeter implements Metric
 {
-    
+    const FACTOR = 1E36;
+
+    const SYMBOL = 'Tm3';
+    const LABEL = 'cubic terameter';
 }

@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Mass;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Tera;
 
-class TeraGram extends Gram implements Metric, Tera
+class TeraGram extends Gram implements Metric
 {
-    
+    const FACTOR = 1E12;
+
+    const SYMBOL = 'Tg';
+    const LABEL = 'teragram';
 }

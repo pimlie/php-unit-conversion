@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Mass;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Milli;
 
-class MilliGram extends Gram implements Metric, Milli
+class MilliGram extends Gram implements Metric
 {
-    
+    const FACTOR = 1E-3;
+
+    const SYMBOL = 'mg';
+    const LABEL = 'milligram';
 }

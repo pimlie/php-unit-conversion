@@ -1,9 +1,10 @@
 <?php
 namespace PhpUnitConversion\Unit\Time;
 
-use PhpUnitConversion\Prefix\Metric\Milli;
-
-class MilliSecond extends Second implements Milli
+class MilliSecond extends Second
 {
-    
+    const FACTOR = 1E-3;
+
+    const SYMBOL = 'ms';
+    const LABEL = 'millisecond';
 }

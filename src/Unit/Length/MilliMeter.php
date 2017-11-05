@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Length;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Milli;
 
-class MilliMeter extends Meter implements Metric, Milli
+class MilliMeter extends Meter implements Metric
 {
-    
+    const FACTOR = 1E-3;
+
+    const SYMBOL = 'mm';
+    const LABEL = 'millimeter';
 }

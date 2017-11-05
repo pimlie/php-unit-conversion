@@ -1,9 +1,10 @@
 <?php
 namespace PhpUnitConversion\Unit\Time;
 
-use PhpUnitConversion\Prefix\Metric\Micro;
-
-class MicroSecond extends Second implements Micro
+class MicroSecond extends Second
 {
-    
+    const FACTOR = 1E-6;
+
+    const SYMBOL = 'μs';
+    const LABEL = 'microsecond';
 }

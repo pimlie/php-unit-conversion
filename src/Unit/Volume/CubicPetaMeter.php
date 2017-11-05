@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Volume;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Peta;
 
-class CubicPetaMeter extends CubicMeter implements Metric, Peta
+class CubicPetaMeter extends CubicMeter implements Metric
 {
-    
+    const FACTOR = 1E45;
+
+    const SYMBOL = 'Pm3';
+    const LABEL = 'cubic petameter';
 }

@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Length;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Micro;
 
-class MicroMeter extends Meter implements Metric, Micro
+class MicroMeter extends Meter implements Metric
 {
-    
+    const FACTOR = 1E-6;
+
+    const SYMBOL = 'μm';
+    const LABEL = 'micrometer';
 }

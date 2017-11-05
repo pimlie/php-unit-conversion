@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Area;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Deca;
 
-class SquareDecaMeter extends SquareMeter implements Metric, Deca
+class SquareDecaMeter extends SquareMeter implements Metric
 {
-    
+    const FACTOR = 1E2;
+
+    const SYMBOL = 'dam2';
+    const LABEL = 'square decameter';
 }

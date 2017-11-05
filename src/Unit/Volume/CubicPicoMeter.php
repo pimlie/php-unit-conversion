@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Volume;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Pico;
 
-class CubicPicoMeter extends CubicMeter implements Metric, Pico
+class CubicPicoMeter extends CubicMeter implements Metric
 {
-    
+    const FACTOR = 1E-36;
+
+    const SYMBOL = 'pm3';
+    const LABEL = 'cubic picometer';
 }

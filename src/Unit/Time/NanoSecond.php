@@ -1,9 +1,10 @@
 <?php
 namespace PhpUnitConversion\Unit\Time;
 
-use PhpUnitConversion\Prefix\Metric\Nano;
-
-class NanoSecond extends Second implements Nano
+class NanoSecond extends Second
 {
-    
+    const FACTOR = 1E-9;
+
+    const SYMBOL = 'ns';
+    const LABEL = 'nanosecond';
 }

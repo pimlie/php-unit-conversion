@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Area;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Tera;
 
-class SquareTeraMeter extends SquareMeter implements Metric, Tera
+class SquareTeraMeter extends SquareMeter implements Metric
 {
-    
+    const FACTOR = 1E24;
+
+    const SYMBOL = 'Tm2';
+    const LABEL = 'square terameter';
 }

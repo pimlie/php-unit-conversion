@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Length;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Centi;
 
-class CentiMeter extends Meter implements Metric, Centi
+class CentiMeter extends Meter implements Metric
 {
-    
+    const FACTOR = 1E-2;
+
+    const SYMBOL = 'cm';
+    const LABEL = 'centimeter';
 }

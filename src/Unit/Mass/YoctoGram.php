@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Mass;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Yocto;
 
-class YoctoGram extends Gram implements Metric, Yocto
+class YoctoGram extends Gram implements Metric
 {
-    
+    const FACTOR = 1E-24;
+
+    const SYMBOL = 'yg';
+    const LABEL = 'yoctogram';
 }

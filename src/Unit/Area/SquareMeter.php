@@ -9,16 +9,8 @@ class SquareMeter extends Area implements Metric
 {
     use BaseUnit;
     
-    const FACTOR_POWER = 2;
+    const FACTOR = 1;
+
     const SYMBOL = 'm2';
     const LABEL = 'square meter';
-    
-    public function getFactor()
-    {
-        if (static::class !== self::class) {
-            return static::FACTOR * static::FACTOR;
-        }
-
-        return false;
-    }
 }

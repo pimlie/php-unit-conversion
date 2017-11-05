@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Area;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Pico;
 
-class SquarePicoMeter extends SquareMeter implements Metric, Pico
+class SquarePicoMeter extends SquareMeter implements Metric
 {
-    
+    const FACTOR = 1E-24;
+
+    const SYMBOL = 'pm2';
+    const LABEL = 'square picometer';
 }

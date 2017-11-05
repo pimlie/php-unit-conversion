@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Area;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Kilo;
 
-class SquareKiloMeter extends SquareMeter implements Metric, Kilo
+class SquareKiloMeter extends SquareMeter implements Metric
 {
-    
+    const FACTOR = 1E6;
+
+    const SYMBOL = 'km2';
+    const LABEL = 'square kilometer';
 }

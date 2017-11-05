@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Area;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Giga;
 
-class SquareGigaMeter extends SquareMeter implements Metric, Giga
+class SquareGigaMeter extends SquareMeter implements Metric
 {
-    
+    const FACTOR = 1E18;
+
+    const SYMBOL = 'Gm2';
+    const LABEL = 'square gigameter';
 }

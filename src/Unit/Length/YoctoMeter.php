@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Length;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Yocto;
 
-class YoctoMeter extends Meter implements Metric, Yocto
+class YoctoMeter extends Meter implements Metric
 {
-    
+    const FACTOR = 1E-24;
+
+    const SYMBOL = 'ym';
+    const LABEL = 'yoctometer';
 }

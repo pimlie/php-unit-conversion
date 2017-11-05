@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Volume;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Zetta;
 
-class CubicZettaMeter extends CubicMeter implements Metric, Zetta
+class CubicZettaMeter extends CubicMeter implements Metric
 {
-    
+    const FACTOR = 1E63;
+
+    const SYMBOL = 'Zm3';
+    const LABEL = 'cubic zettameter';
 }

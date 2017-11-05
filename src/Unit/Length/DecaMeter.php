@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Length;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Deca;
 
-class DecaMeter extends Meter implements Metric, Deca
+class DecaMeter extends Meter implements Metric
 {
-    
+    const FACTOR = 1E1;
+
+    const SYMBOL = 'dam';
+    const LABEL = 'decameter';
 }

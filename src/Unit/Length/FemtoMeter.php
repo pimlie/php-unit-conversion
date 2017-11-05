@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Length;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Femto;
 
-class FemtoMeter extends Meter implements Metric, Femto
+class FemtoMeter extends Meter implements Metric
 {
-    
+    const FACTOR = 1E-15;
+
+    const SYMBOL = 'fm';
+    const LABEL = 'femtometer';
 }

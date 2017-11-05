@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Length;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Pico;
 
-class PicoMeter extends Meter implements Metric, Pico
+class PicoMeter extends Meter implements Metric
 {
-    
+    const FACTOR = 1E-12;
+
+    const SYMBOL = 'pm';
+    const LABEL = 'picometer';
 }

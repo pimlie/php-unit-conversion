@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Area;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Hecto;
 
-class SquareHectoMeter extends SquareMeter implements Metric, Hecto
+class SquareHectoMeter extends SquareMeter implements Metric
 {
-    
+    const FACTOR = 1E4;
+
+    const SYMBOL = 'hm2';
+    const LABEL = 'square hectometer';
 }

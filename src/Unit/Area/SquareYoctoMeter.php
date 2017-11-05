@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Area;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Yocto;
 
-class SquareYoctoMeter extends SquareMeter implements Metric, Yocto
+class SquareYoctoMeter extends SquareMeter implements Metric
 {
-    
+    const FACTOR = 1E-48;
+
+    const SYMBOL = 'ym2';
+    const LABEL = 'square yoctometer';
 }

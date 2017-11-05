@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Mass;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Exa;
 
-class ExaGram extends Gram implements Metric, Exa
+class ExaGram extends Gram implements Metric
 {
-    
+    const FACTOR = 1E18;
+
+    const SYMBOL = 'Eg';
+    const LABEL = 'exagram';
 }

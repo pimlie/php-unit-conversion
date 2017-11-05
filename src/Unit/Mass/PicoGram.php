@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Mass;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Pico;
 
-class PicoGram extends Gram implements Metric, Pico
+class PicoGram extends Gram implements Metric
 {
-    
+    const FACTOR = 1E-12;
+
+    const SYMBOL = 'pg';
+    const LABEL = 'picogram';
 }

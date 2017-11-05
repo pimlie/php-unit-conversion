@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Mass;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Zepto;
 
-class ZeptoGram extends Gram implements Metric, Zepto
+class ZeptoGram extends Gram implements Metric
 {
-    
+    const FACTOR = 1E-21;
+
+    const SYMBOL = 'zg';
+    const LABEL = 'zeptogram';
 }

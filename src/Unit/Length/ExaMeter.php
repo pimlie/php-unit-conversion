@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Length;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Exa;
 
-class ExaMeter extends Meter implements Metric, Exa
+class ExaMeter extends Meter implements Metric
 {
-    
+    const FACTOR = 1E18;
+
+    const SYMBOL = 'Em';
+    const LABEL = 'exameter';
 }

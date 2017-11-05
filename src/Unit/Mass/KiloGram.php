@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Mass;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Kilo;
 
-class KiloGram extends Gram implements Metric, Kilo
+class KiloGram extends Gram implements Metric
 {
+    const FACTOR = 1E3;
 
+    const SYMBOL = 'kg';
+    const LABEL = 'kilogram';
 }

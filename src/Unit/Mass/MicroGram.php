@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Mass;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Micro;
 
-class MicroGram extends Gram implements Metric, Micro
+class MicroGram extends Gram implements Metric
 {
-    
+    const FACTOR = 1E-6;
+
+    const SYMBOL = 'μg';
+    const LABEL = 'microgram';
 }

@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Mass;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Mega;
 
-class MegaGram extends Gram implements Metric, Mega
+class MegaGram extends Gram implements Metric
 {
-    
+    const FACTOR = 1E6;
+
+    const SYMBOL = 'Mg';
+    const LABEL = 'megagram';
 }

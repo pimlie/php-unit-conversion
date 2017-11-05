@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Length;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Deci;
 
-class DeciMeter extends Meter implements Metric, Deci
+class DeciMeter extends Meter implements Metric
 {
-    
+    const FACTOR = 1E-1;
+
+    const SYMBOL = 'dm';
+    const LABEL = 'decimeter';
 }

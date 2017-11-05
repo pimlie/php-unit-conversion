@@ -2,9 +2,11 @@
 namespace PhpUnitConversion\Unit\Length;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Prefix\Metric\Atto;
 
-class AttoMeter extends Meter implements Metric, Atto
+class AttoMeter extends Meter implements Metric
 {
-    
+    const FACTOR = 1E-18;
+
+    const SYMBOL = 'am';
+    const LABEL = 'attometer';
 }
