@@ -7,7 +7,7 @@ class Inch extends Yard
 {
     use HasRelativeFactor;
     
-    const FACTOR = 36;
+    const FACTOR = 1/36;
     
     const SYMBOL = 'in';
     const LABEL = 'inch';

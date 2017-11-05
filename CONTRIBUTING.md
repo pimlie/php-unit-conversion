@@ -2,7 +2,7 @@
 As this package is still very much a work in progress, any help adding more unit's and unit tests is really appreciated!
 
 A couple of things are important when submitting a Pull Request:
-- Use the PSR-2 Coding Standard
+- Use PSR-2 Coding Standard
 - Add tests
 - Use the method of implementation as described below
 
@@ -25,23 +25,15 @@ imperial / usc systems.
 Now create a folder `Unit/XXX/` in which we will place all the unit classes for this unit type, after this proceed with adding a base unit
 
 #### Adding a base unit
-We prefer the base unit to be a unit from the metric system. This way we can easily add all SI prefixed units by extending them from the base
-unit and only implement a `PhpUnitConversion\Prefix\Metric\<SI_Prefix>` interface. E.g. the implementation of `Mass\MilliGram` is:
-```php 
-class MilliGram extends Gram implements Metric, Milli
-{}
-```
-You should not set a `FACTOR` on the `BASE_UNIT`, otherwise the above implementation will fail because the interface `Prefix\Metric\Milli` 
-cannot overwrite an already defined class constant.
-
-See `Gruntfile.js` for a quick way to add all prefixed classes to your unit.
+We prefer the base unit to be a unit from the SI and/or metric system. If your unit should use the SI prefixes, please use the `Gruntfile.js` for a 
+quick way to add all prefixed classes to your unit.
 
 #### Add an new unit to a unit type
 When adding a unit `YYY` to unit type `XXX` start by creating the file `Unit/XXX/YYY.php`.
 
 If your unit has a linear correspondence to the base unit, just set the class constant `FACTOR` to its correct value.
-If your unit has an offset to the base unit, you can add a class constant `ADDITION`. 
-(Conversion to the BASE_UNIT value is done by first applying the `FACTOR`, then adding the `ADDITION`)
+If your unit has an offset to the base unit, you can add a class constant `ADDITION_PRE` or `ADDITION_POST`. 
+These correspond to the following formula: `BaseUnitValue = (ThisUnitValue + ADDITION_PRE) * FACTOR + ADDITION_POST`
 
 Please also set the class constant `SYMBOL` and `LABEL`. When your unit does not have a `SYMBOL`, omit it or set it to an empty string. `LABEL` is often equal to your lower case classname.
 
@@ -56,14 +48,14 @@ class AvoirdupoisPound extends Mass
 {
     use HasFactor;
     
-    const FACTOR = 453.59237; // FACTOR is relative to Mass\Gram, 453.6 Gram in a Pound
+    const FACTOR = 453.59237; // FACTOR is relative to Mass\Gram, 1 Avoirdupois Pound is 453.6 Gram
 }
 
 class Ounce extends Pound
 {
     use HasRelativeFactor;
     
-    const FACTOR = 16; // FACTOR is relative to Mass\Pound, 16 Ounce in a Pound
+    const FACTOR = 1/16; // FACTOR is relative to Mass\Pound, 1 Ounce is 1/16 Pound (or 16 Ounce in a Pound)
 }
 ```
 

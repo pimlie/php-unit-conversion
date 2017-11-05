@@ -31,19 +31,20 @@ module.exports = function(grunt) {
         fileExt = '.php',
         baseUnits = {},
         units = [
-            { unit: 'Mass',   symbol: 'g', label: 'gram', prefix: '' }, 
-            { unit: 'Length', symbol: 'm', label: 'meter', prefix: '' }, 
-            { unit: 'Area',   symbol: 'm', label: 'meter', prefix: 'Square' },
-            { unit: 'Volume', symbol: 'm', label: 'meter', prefix: 'Cubic' },
+            { unit: 'Mass',   base: 1, relative: 0, symbol: 'g', label: 'gram', prefix: '' }, 
+            { unit: 'Length', base: 1, relative: 0, symbol: 'm', label: 'meter', prefix: '' }, 
+            { unit: 'Area',   base: 1, relative: 0, symbol: 'm', label: 'meter', prefix: 'Square' },
+            { unit: 'Volume', base: 1, relative: 0, symbol: 'm', label: 'meter', prefix: 'Cubic' },
+            { unit: 'Volume', base: 1, relative: 1, symbol: 'l', label: 'liter', prefix: '' },
          ];
     phpTemplate = `<?php
 namespace PhpUnitConversion\\Unit\\<%= unit %>;
 
 use PhpUnitConversion\\System\\Metric;
-
+<%= extraIncludes %>
 class <%= baseUnitPrefix %><%= prefixSI %><%= baseUnit %> extends <%= baseUnitPrefix %><%= baseUnit %> implements Metric
 {
-    const FACTOR = <%= factor %>;
+<%= extraUses %>    const FACTOR = <%= factor %>;
 
     const SYMBOL = '<%= symbol %>';
     const LABEL = '<%= label %>';
@@ -52,7 +53,6 @@ class <%= baseUnitPrefix %><%= prefixSI %><%= baseUnit %> extends <%= baseUnitPr
     var baseRegex = /BASE_UNIT\s*=\s*([^:]+)::/,
         replaceExt = new RegExp(fileExt);
 
-    //grunt.file.recurse(siPrefixes, function(abspath, rootdir, subdir, filename) {
     for (var u = 0; u < units.length; u++) {
       var baseUnitPrefix = units[u].prefix,
           baseUnit = units[u].label.replace(/\b./g, function(m){ return m.toUpperCase(); })
@@ -60,11 +60,18 @@ class <%= baseUnitPrefix %><%= prefixSI %><%= baseUnit %> extends <%= baseUnitPr
       if(baseUnit) {
         for (var i = 0; i < siPrefixes.length; i++) {
           siPrefix = siPrefixes[i]
-          var prefixSI = siPrefix.label.replace(/\b./g, function(m){ return m.toUpperCase(); }) /*filename.replace(replaceExt, '')*/,
+          var prefixSI = siPrefix.label.replace(/\b./g, function(m){ return m.toUpperCase(); }),
               phpFileName = unitFolder + units[u].unit + '/' + baseUnitPrefix + prefixSI + baseUnit + fileExt,
-              factor = '1E' + siPrefix.factor * (baseUnitPrefix === 'Cubic' ? 3 : (baseUnitPrefix === 'Square' ? 2 : 1)),
+              factor = units[u].base + 'E' + siPrefix.factor * (baseUnitPrefix === 'Cubic' ? 3 : (baseUnitPrefix === 'Square' ? 2 : 1)),
               symbol = siPrefix.symbol + units[u].symbol + (baseUnitPrefix === 'Cubic' ? '3' : (baseUnitPrefix === 'Square' ? '2' : '')),
               label = (baseUnitPrefix ? baseUnitPrefix.toLowerCase() + ' ' : '') + siPrefix.label + units[u].label;
+
+          extraIncludes = ''
+          extraUses = ''
+          if (units[u].relative) {
+            extraIncludes = 'use PhpUnitConversion\\Traits\\HasRelativeFactor;\n';
+            extraUses = '    use HasRelativeFactor;\n\n';
+          }
 
           if(true||!grunt.file.exists(phpFileName)) {
             console.log(phpFileName);
@@ -74,6 +81,8 @@ class <%= baseUnitPrefix %><%= prefixSI %><%= baseUnit %> extends <%= baseUnitPr
                   factor: factor,
                   symbol: symbol,
                   label: label,
+                  extraIncludes: extraIncludes,
+                  extraUses: extraUses,
                   prefixSI: prefixSI,
                   baseUnit: baseUnit,
                   baseUnitPrefix: baseUnitPrefix
@@ -83,6 +92,5 @@ class <%= baseUnitPrefix %><%= prefixSI %><%= baseUnit %> extends <%= baseUnitPr
         }
       }
     }
-    //});
   });
 };

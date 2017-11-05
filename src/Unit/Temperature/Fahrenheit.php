@@ -1,18 +1,13 @@
 <?php
 namespace PhpUnitConversion\Unit\Temperature;
 
-use PhpUnitConversion\System\Imperial;
 use PhpUnitConversion\System\USC;
-use PhpUnitConversion\Unit\Temperature;
-use PhpUnitConversion\Traits\HasFactor;
 
-class Fahrenheit extends Celsius
+class Fahrenheit extends Kelvin implements USC
 {
-    use HasFactor;
-    
-    const FACTOR = 0.555555556;
-    const ADDITION = -32;
+    const FACTOR = 5/9;
+    const ADDITION_PRE = 459.67;
     
     const SYMBOL = '°F';
-    const LABEL = 'farenheit';
+    const LABEL = 'fahrenheit';
 }

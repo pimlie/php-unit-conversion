@@ -7,7 +7,7 @@ class Ounce extends Pound
 {
     use HasRelativeFactor;
     
-    const FACTOR = 16;
+    const FACTOR = 1/16;
     
     const SYMBOL = 'oz';
     const LABEL = 'ounce';

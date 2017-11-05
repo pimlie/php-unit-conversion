@@ -1,17 +1,11 @@
 <?php
 namespace PhpUnitConversion\Unit\Temperature;
 
-use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Unit\Temperature;
-use PhpUnitConversion\Traits\BaseUnit;
-use PhpUnitConversion\Traits\HasFactor;
-
-class Romer extends Celsius
+class Romer extends Kelvin
 {
-    use HasFactor;
-
-    const FACTOR = 1.9047619;
-    const ADDITION = -7.5;
+    const ADDITION_PRE = -7.5;
+    const FACTOR = 40/21;
+    const ADDITION_POST = 273.15;
 
     const SYMBOL = '°Rø';
     const LABEL = 'Rømer';

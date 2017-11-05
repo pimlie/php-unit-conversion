@@ -7,7 +7,7 @@ class Point extends Yard
 {
     use HasRelativeFactor;
     
-    const FACTOR = 2591;
+    const FACTOR = 1/2592;
     
     const SYMBOL = 'p';
     const LABEL = 'point';

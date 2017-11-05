@@ -8,7 +8,7 @@ class LongTon extends AvoirdupoisPound implements Imperial
 {
     use hasRelativeFactor;
     
-    const FACTOR = 1/2240;
+    const FACTOR = 2240;
     
     const SYMBOL = '';
     const LABEL = 'long ton';

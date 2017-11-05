@@ -7,7 +7,7 @@ class Drachm extends Pound
 {
     use HasRelativeFactor;
     
-    const FACTOR = 256;
+    const FACTOR = 1/256;
     
     const SYMBOL = 'dr';
     const LABEL = 'drachm';

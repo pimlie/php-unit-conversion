@@ -8,10 +8,19 @@ trait HasRelativeFactor
         return self::FACTOR;
     }
 
-    public function getAddition()
+    public function getAdditionPre()
     {
-        if (defined('static::ADDITION')) {
-            return self::ADDITION;
+        if (defined('self::ADDITION_PRE')) {
+            return self::ADDITION_PRE;
+        }
+
+        return false;
+    }
+
+    public function getAdditionPost()
+    {
+        if (defined('self::ADDITION_POST')) {
+            return self::ADDITION_POST;
         }
 
         return false;
@@ -19,28 +28,49 @@ trait HasRelativeFactor
 
     protected function fromBaseValue($baseValue)
     {
-        $value = parent::fromBaseValue($baseValue);
-        $value*= self::getFactor();
-        
-        $addition = self::getAddition();
+        $value = $baseValue;
+
+        $addition = self::getAdditionPost();
         if ($addition !== false) {
             $value-= $addition;
         }
-        
-        return $value;
+
+        $factor = self::getFactor();
+        if ($factor !== false) {
+            $value/= $factor;
+        }
+
+        $addition = self::getAdditionPre();
+        if ($addition !== false) {
+            $value-= $addition;
+        }
+
+        return parent::fromBaseValue($value);
     }
-    
+
     protected function toBaseValue($value = null)
     {
-        if($value === null) $value = $this->value;
-        
-        $addition = self::getAddition();
+        if ($value === null) {
+            $value = $this->value;
+        }
+
+        $value = parent::toBaseValue($value);
+
+        $addition = self::getAdditionPre();
         if ($addition !== false) {
             $value+= $addition;
         }
-        
-        $baseValue = $value / self::getFactor();
-        
-        return parent::toBaseValue($baseValue);
+
+        $factor = self::getFactor();
+        if ($factor !== false) {
+            $value*= $factor;
+        }
+
+        $addition = self::getAdditionPost();
+        if ($addition !== false) {
+            $value+= $addition;
+        }
+
+        return $value;
     }
 }

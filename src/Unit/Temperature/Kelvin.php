@@ -1,17 +1,12 @@
 <?php
 namespace PhpUnitConversion\Unit\Temperature;
 
-use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Unit\Temperature;
 use PhpUnitConversion\Traits\BaseUnit;
-use PhpUnitConversion\Traits\HasFactor;
+use PhpUnitConversion\Unit\Temperature;
 
-class Kelvin extends Celsius
+class Kelvin extends Temperature
 {
-    use HasFactor;
-
-    const FACTOR = 1;
-    const ADDITION = -273.15;
+    use BaseUnit;
 
     const SYMBOL = 'K';
     const LABEL = 'Kelvin';

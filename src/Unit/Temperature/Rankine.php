@@ -1,17 +1,9 @@
 <?php
 namespace PhpUnitConversion\Unit\Temperature;
 
-use PhpUnitConversion\System\Imperial;
-use PhpUnitConversion\System\USC;
-use PhpUnitConversion\Unit\Temperature;
-use PhpUnitConversion\Traits\HasRelativeFactor;
-
-class Rankine extends Fahrenheit
+class Rankine extends Kelvin
 {
-    use HasRelativeFactor;
-    
-    const FACTOR = 1;
-    const ADDITION = -459.67;
+    const FACTOR = 5/9;
     
     const SYMBOL = '°R';
     const LABEL = 'rankine';

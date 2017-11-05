@@ -2,12 +2,10 @@
 namespace PhpUnitConversion\Unit\Temperature;
 
 use PhpUnitConversion\System\Metric;
-use PhpUnitConversion\Unit\Temperature;
-use PhpUnitConversion\Traits\BaseUnit;
 
-class Celsius extends Temperature implements Metric
+class Celsius extends Kelvin implements Metric
 {
-    use BaseUnit;
+    const ADDITION_PRE = 273.15;
     
     const SYMBOL = '°C';
     const LABEL = 'celsius';

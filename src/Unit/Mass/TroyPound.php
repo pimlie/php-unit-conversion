@@ -9,7 +9,7 @@ class TroyPound extends TroyOunce
 {
     use HasRelativeFactor;
     
-    const FACTOR = 1/12;
+    const FACTOR = 12;
     
     const SYMBOL = 'lb t';
     const LABEL = 'troy pound';

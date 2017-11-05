@@ -45,10 +45,19 @@ class Unit
         return false;
     }
     
-    public function getAddition()
+    public function getAdditionPre()
     {
-        if (defined('static::ADDITION')) {
-            return static::ADDITION;
+        if (defined('static::ADDITION_PRE')) {
+            return static::ADDITION_PRE;
+        }
+
+        return false;
+    }
+
+    public function getAdditionPost()
+    {
+        if (defined('static::ADDITION_POST')) {
+            return static::ADDITION_POST;
         }
 
         return false;
@@ -76,13 +85,17 @@ class Unit
     {
         $value = $baseValue;
 
-        $factor = $this->getFactor();
+        $addition = $this->getAdditionPost();
+        if ($addition !== false) {
+            $value-= $addition;
+        }
 
+        $factor = $this->getFactor();
         if ($factor !== false) {
             $value/= $factor;
         }
 
-        $addition = $this->getAddition();
+        $addition = $this->getAdditionPre();
         if ($addition !== false) {
             $value-= $addition;
         }
@@ -92,14 +105,21 @@ class Unit
     
     protected function toBaseValue($value = null)
     {
-        if($value === null) $value = $this->value;
+        if ($value === null) {
+            $value = $this->value;
+        }
+
+        $addition = $this->getAdditionPre();
+        if ($addition !== false) {
+            $value+= $addition;
+        }
 
         $factor = $this->getFactor();
         if ($factor !== false) {
             $value*= $factor;
         }
 
-        $addition = $this->getAddition();
+        $addition = $this->getAdditionPost();
         if ($addition !== false) {
             $value+= $addition;
         }
@@ -125,7 +145,7 @@ class Unit
     
     /**
      * Convert from/create a new Unit object for the supplied value
-     * 
+     *
      * Supplied value can either be:
      * - an integer or double, in which case the value should contain the TYPE of the value
      * - a unit class name (string), in which case the value to convert from will be set to 1
@@ -145,22 +165,22 @@ class Unit
             $type = $intValue & 63;
             $value = ($intValue >> 6) + ($value - $intValue);
             
-            $typeMap = static::_buildTypeMap();
+            $typeMap = static::buildTypeMap();
             
-            if(isset($typeMap[$type])) {
+            if (isset($typeMap[$type])) {
                 $baseClass = $typeMap[$type]::BASE_UNIT;
                 
                 return new $baseClass($value);
             }
             
             throw new InvalidArgumentException();
-        }else if ($classType === 'string' && !class_exists($classType)) {
+        } elseif ($classType === 'string' && !class_exists($classType)) {
             // make use of php's type juggling to find symbol
             $numberPart = (float)$value;
             $symbolPart = trim(str_replace($numberPart, '', $value));
 
-            $symbolMap = static::_buildSymbolMap();
-            foreach ($symbolMap As $type => $typeSymbols) {
+            $symbolMap = static::buildSymbolMap();
+            foreach ($symbolMap as $type => $typeSymbols) {
                 // If this method is not called from the Unit class,
                 // then skip all other unit types
                 if (static::class !== self::class && static::TYPE !== $type) {
@@ -170,22 +190,22 @@ class Unit
                 // make use of php's type juggling to find symbol
                 $numberPart = (float)$value;
                 $symbolPart = trim(str_replace($numberPart, '', $value));
-                foreach ($typeSymbols As $symbol => $class) {
+                foreach ($typeSymbols as $symbol => $class) {
                     if ($symbolPart === $symbol) {
                         return new $class($numberPart);
                     }
                 }
             }
 
-            $labelMap = static::_buildLabelMap();
-            foreach ($labelMap As $type => $typeLabels) {
+            $labelMap = static::buildLabelMap();
+            foreach ($labelMap as $type => $typeLabels) {
                 // If this method is not called from the Unit class,
                 // then skip all other unit types
                 if (static::class !== self::class && static::TYPE !== $type) {
                     continue;
                 }
 
-                foreach ($typeLabels As $label => $class) {
+                foreach ($typeLabels as $label => $class) {
                     if ($symbolPart === $label) {
                         return new $class($numberPart);
                     }
@@ -193,16 +213,16 @@ class Unit
             }
 
             throw new InvalidArgumentException();
-        } else if ($classType === 'string' || $classType === 'object') {
+        } elseif ($classType === 'string' || $classType === 'object') {
             // If classType is string, initiate a default value of 1
             if ($classType === 'string') {
                 $value = new $value(1);
             }
 
-            if (static::TYPE !== $value::TYPE ) {
+            if (static::TYPE !== $value::TYPE) {
                 throw new UnsupportedConversionException([static::TYPE, $value::TYPE]);
             } else {
-                $baseUnit = $value->toBaseUnit();    
+                $baseUnit = $value->toBaseUnit();
                 
                 if ($baseUnit instanceof static) {
                     return $baseUnit;
@@ -224,7 +244,7 @@ class Unit
      */
     public function to($unitClass)
     {
-        $baseUnit = $this->toBaseUnit();    
+        $baseUnit = $this->toBaseUnit();
         
         $classType = gettype($unitClass);
 
@@ -234,8 +254,8 @@ class Unit
             } else {
                 return $unitClass::createFromBaseUnit($baseUnit);
             }
-        } else if ($classType === 'object') {
-            if (static::TYPE !== $unitClass::TYPE ) {
+        } elseif ($classType === 'object') {
+            if (static::TYPE !== $unitClass::TYPE) {
                 throw new UnsupportedConversionException([static::TYPE, $unitClass::TYPE]);
             } else {
                 $unitClass->setValue($baseUnit->getValue(), true);
@@ -248,12 +268,12 @@ class Unit
     /**
      * Finds the nearest unit to a given value
      *
-     * Returns a new $unitClass instance which is euqal to the given value 
+     * Returns a new $unitClass instance which is euqal to the given value
      * but with a value closest to 1
      *
      * @param mixed $value An integer, double or Unit object
      *
-     * @return Returns an Unit object 
+     * @return Returns an Unit object
      */
     public static function nearest($value, $system = null)
     {
@@ -261,23 +281,25 @@ class Unit
             throw new InvocationException([self::class]);
         }
 
-        $factorMap = static::_buildFactorMap();
+        $factorMap = static::buildFactorMap();
         
         $classType = gettype($value);
         
         if ($classType === 'integer' || $classType === 'double') {
             $baseValue = $value;
-        } else if ($classType === 'object' && $value instanceof Unit) {
+        } elseif ($classType === 'object' && $value instanceof Unit) {
             $baseValue = $value->toBaseValue();
         } else {
             throw new InvalidArgumentException('$value should be an integer, double or instance of Unit');
         }
 
         if (is_array($factorMap[static::TYPE])) {
-            foreach ($factorMap[static::TYPE] As $unitClass => $unitBaseValue) {
+            foreach ($factorMap[static::TYPE] as $unitClass => $unitBaseValue) {
                 if ($system === null || (new $unitClass) instanceof $system) {
                     if ($baseValue < 0.9 * $unitBaseValue) {
-                        if (!isset($lastUnitClass)) $lastUnitClass = $unitClass;
+                        if (!isset($lastUnitClass)) {
+                            $lastUnitClass = $unitClass;
+                        }
                         
                         if ($classType === 'object' && $classType instanceof Unit) {
                             return $value->to($lastUnitClass);
@@ -310,7 +332,7 @@ class Unit
                 throw new InvalidArgumentException();
             }
 
-            if (static::TYPE !== $args[$i]::TYPE ) {
+            if (static::TYPE !== $args[$i]::TYPE) {
                 throw new UnsupportedUnitException([$args[$i]::TYPE]);
             }
 
@@ -336,7 +358,7 @@ class Unit
                 throw new InvalidArgumentException();
             }
 
-            if (static::TYPE !== $args[$i]::TYPE ) {
+            if (static::TYPE !== $args[$i]::TYPE) {
                 throw new UnsupportedUnitException([$args[$i]::TYPE]);
             }
             
@@ -362,11 +384,11 @@ class Unit
         }
     }
 
-    private static function _buildTypeMap($rebuild = false)
+    private static function buildTypeMap($rebuild = false)
     {
         if ($rebuild || !isset(static::$typeMap)) {
             static::$typeMap = [];
-            foreach (glob(__DIR__.'/Unit/*.php') As $unitFile) {
+            foreach (glob(__DIR__.'/Unit/*.php') as $unitFile) {
                 $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
                 
                 if (class_exists($unitClass)) {
@@ -379,12 +401,12 @@ class Unit
     }
 
 
-    private static function _buildFactorMap($rebuild = false)
+    private static function buildFactorMap($rebuild = false)
     {
         if ($rebuild || !isset(static::$factorMap)) {
             static::$factorMap = [];
             
-            foreach (glob(__DIR__ .'/Unit/*/*.php') As $unitFile) {
+            foreach (glob(__DIR__ .'/Unit/*/*.php') as $unitFile) {
                 $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
     
                 if (class_exists($unitClass)) {
@@ -398,7 +420,7 @@ class Unit
                 }
             }
 
-            foreach (static::$factorMap As $unitType => $values) {
+            foreach (static::$factorMap as $unitType => $values) {
                 asort(static::$factorMap[$unitType]);
             }
         }
@@ -406,12 +428,12 @@ class Unit
         return static::$factorMap;
     }
 
-    private static function _buildSymbolMap($rebuild = false)
+    private static function buildSymbolMap($rebuild = false)
     {
         if ($rebuild || !isset(static::$symbolMap)) {
             static::$symbolMap = [];
 
-            foreach (glob(__DIR__ .'/Unit/*/*.php') As $unitFile) {
+            foreach (glob(__DIR__ .'/Unit/*/*.php') as $unitFile) {
                 $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
     
                 if (class_exists($unitClass)) {
@@ -433,11 +455,11 @@ class Unit
         return static::$symbolMap;
     }
 
-    private static function _buildLabelMap($rebuild = false)
+    private static function buildLabelMap($rebuild = false)
     {
         if ($rebuild || !isset(static::$labelMap)) {
             static::$labelMap = [];
-            foreach (glob(__DIR__ .'/Unit/*/*.php') As $unitFile) {
+            foreach (glob(__DIR__ .'/Unit/*/*.php') as $unitFile) {
                 $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
 
                 if (class_exists($unitClass)) {

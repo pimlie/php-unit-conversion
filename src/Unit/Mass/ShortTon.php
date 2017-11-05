@@ -8,7 +8,7 @@ class ShortTon extends AvoirdupoisPound implements USC
 {
     use hasRelativeFactor;
     
-    const FACTOR = 1/2000;
+    const FACTOR = 2000;
     
     const SYMBOL = '';
     const LABEL = 'short ton';

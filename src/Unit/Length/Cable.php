@@ -3,12 +3,12 @@ namespace PhpUnitConversion\Unit\Length;
 
 use PhpUnitConversion\Traits\HasRelativeFactor;
 
-class Feet extends Yard
+class Cable extends Yard
 {
     use HasRelativeFactor;
     
-    const FACTOR = 3;
+    const FACTOR = 240;
     
-    const SYMBOL = 'ft';
-    const LABEL = 'foot';
+    const SYMBOL = 'cb';
+    const LABEL = 'cable';
 }

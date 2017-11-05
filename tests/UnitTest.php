@@ -6,9 +6,35 @@ use PhpUnitConversion\Exception;
 use PhpUnitConversion\System;
 use PhpUnitConversion\Unit;
 use PhpUnitConversion\Unit\Mass;
+use PhpUnitConversionTest\Fixtures\MyUnitType;
 
 class UnitTest extends TestCase
 {
+    public function testFactors()
+    {
+        $unit = new MyUnitType\OneUnit(1);
+        $this->assertEquals(0.5, $unit->to(MyUnitType\DoubleUnit::class)->getValue());
+        $this->assertEquals(2, $unit->to(MyUnitType\HalfUnit::class)->getValue());
+        $this->assertEquals(3, $unit->to(MyUnitType\ThirdUnitRelativeFromBase::class)->getValue());
+        $this->assertEquals(0.5, MyUnitType\DoubleUnitRelativeFromHalf::from($unit)->getValue());
+        $this->assertEquals(0.5, MyUnitType\DoubleUnitRelativeFromThird::from($unit)->getValue());
+        
+        $unit = new MyUnitType\DoubleUnitRelativeFromHalf(1);
+        $this->assertEquals(2, MyUnitType\OneUnit::from($unit)->getValue());
+        $this->assertEquals(1, MyUnitType\DoubleUnitRelativeFromThird::from($unit)->getValue());
+        
+        $unit = new MyUnitType\ThirdUnitRelativeFromBase(1);
+        $this->assertEquals(1/3, MyUnitType\OneUnit::from($unit)->getValue());
+        $this->assertEquals(2/3, MyUnitType\HalfUnit::from($unit)->getValue());
+        $this->assertEquals(1/6, MyUnitType\DoubleUnitRelativeFromHalf::from($unit)->getValue());
+        
+        $unit = new MyUnitType\DoubleUnitRelativeFromThird(2);
+        $this->assertEquals(4, MyUnitType\OneUnit::from($unit)->getValue());
+        $this->assertEquals(2, MyUnitType\DoubleUnit::from($unit)->getValue());
+        $this->assertEquals(8, MyUnitType\HalfUnit::from($unit)->getValue());
+        $this->assertEquals(2, MyUnitType\DoubleUnitRelativeFromHalf::from($unit)->getValue());
+    }
+    
     public function testTypeValues()
     {
         $kiloGrams = new Mass\KiloGram(1);
@@ -38,7 +64,7 @@ class UnitTest extends TestCase
         $grams = new Mass\Gram(900);
         
         $unit = Mass::nearest($grams, \PhpUnitConversion\System\Metric::class);
-        
+
         $this->assertInstanceOf(Mass\KiloGram::class, $unit);
     }
 

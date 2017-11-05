@@ -8,7 +8,7 @@ class LongHundredWeight extends AvoirdupoisPound implements Imperial
 {
     use HasRelativeFactor;
     
-    const FACTOR = 1/112;
+    const FACTOR = 112;
     
     const SYMBOL = 'long cwt';
     const LABEL = 'long hundredweight';

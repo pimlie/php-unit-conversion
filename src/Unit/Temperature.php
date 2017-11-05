@@ -8,5 +8,5 @@ class Temperature extends Unit
 {
     const TYPE = UnitType::TEMPERATURE;
 
-    const BASE_UNIT = Temperature\Celsius::class;
+    const BASE_UNIT = Temperature\Kelvin::class;
 }
