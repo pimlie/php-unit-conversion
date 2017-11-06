@@ -1,5 +1,9 @@
 # Php Unit Conversion
 
+[![Latest Stable Version](https://img.shields.io/packagist/v/php-unit-conversion/php-unit-conversion.svg)](https://packagist.org/packages/php-unit-conversion/php-unit-conversion)
+[![Total Downloads](https://img.shields.io/packagist/dt/php-unit-conversion/php-unit-conversion.svg)](https://packagist.org/packages/php-unit-conversion/php-unit-conversion)
+[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://packagist.org/packages/php-unit-conversion/php-unit-conversion)
+
 The `php-unit-conversion/php-unit-conversion` package provides full PSR-4 compatible unit conversion. Most other packages that are available for unit conversion are using `string` types to indicate unit types. In this package all unit types are classes.
 
 We still need to add a lot more units and tests to make the package more usefull. If you want to help me with that, please check [Contributing](CONTRIBUTING.md)!
