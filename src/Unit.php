@@ -11,6 +11,7 @@ class Unit
 {
     protected $value;
 
+    static protected $bitShift = 6;
     static protected $typeMap;
     static protected $factorMap;
     static protected $symbolMap;
@@ -162,9 +163,9 @@ class Unit
         
         if ($classType === 'integer' || $classType === 'double') {
             $intValue = (int)$value;
-            $type = $intValue & 63;
-            $value = ($intValue >> 6) + ($value - $intValue);
-            
+            $type = $intValue & ((1 << self::$bitShift) - 1);
+            $value = ($intValue >> self::$bitShift) + ($value - $intValue);
+
             $typeMap = static::buildTypeMap();
             
             if (isset($typeMap[$type])) {
@@ -172,7 +173,7 @@ class Unit
                 
                 return new $baseClass($value);
             }
-            
+
             throw new InvalidArgumentException();
         } elseif ($classType === 'string' && !class_exists($classType)) {
             // make use of php's type juggling to find symbol
@@ -484,7 +485,7 @@ class Unit
     public function __invoke()
     {
         $intBase = (int)$this->toBaseValue();
-        return ($intBase << 6) + static::TYPE + ($this->toBaseValue() - $intBase);
+        return ($intBase << self::$bitShift) + static::TYPE + ($this->toBaseValue() - $intBase);
     }
 
     public function __toString()
