@@ -13,4 +13,5 @@ class UnitType extends Enum
     const VOLUME = 4;
     const TIME = 5;
     const TEMPERATURE = 6;
+    const AMOUNT = 7;
 }

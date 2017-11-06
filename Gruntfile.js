@@ -36,6 +36,7 @@ module.exports = function(grunt) {
             { unit: 'Area',   base: 1, relative: 0, symbol: 'm', label: 'meter', prefix: 'Square' },
             { unit: 'Volume', base: 1, relative: 0, symbol: 'm', label: 'meter', prefix: 'Cubic' },
             { unit: 'Volume', base: 1, relative: 1, symbol: 'l', label: 'liter', prefix: '' },
+            { unit: 'Amount', base: 1, relative: 1, symbol: 'mol', label: 'mole', prefix: '' },
          ];
     phpTemplate = `<?php
 namespace PhpUnitConversion\\Unit\\<%= unit %>;
@@ -73,7 +74,7 @@ class <%= baseUnitPrefix %><%= prefixSI %><%= baseUnit %> extends <%= baseUnitPr
             extraUses = '    use HasRelativeFactor;\n\n';
           }
 
-          if(true||!grunt.file.exists(phpFileName)) {
+          if(units[u].force || !grunt.file.exists(phpFileName)) {
             console.log(phpFileName);
             grunt.file.write(phpFileName, 
               grunt.template.process(phpTemplate, { data: { 
