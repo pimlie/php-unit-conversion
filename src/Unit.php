@@ -241,7 +241,7 @@ class Unit
      *
      * @param mixed $unitClass An Unit class name or object
      *
-     * @return A new Unit instance as defined by $unitClass set to the value of the current Unit
+     * @return Unit|bool A new Unit instance as defined by $unitClass set to the value of the current Unit
      */
     public function to($unitClass)
     {
@@ -274,7 +274,7 @@ class Unit
      *
      * @param mixed $value An integer, double or Unit object
      *
-     * @return Returns an Unit object
+     * @return Unit|bool Returns an Unit object
      */
     public static function nearest($value, $system = null)
     {
