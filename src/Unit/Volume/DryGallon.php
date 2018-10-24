@@ -12,4 +12,3 @@ class DryGallon extends DryPint
     const SYMBOL = 'gal';
     const LABEL = '(dry) gallon';
 }
-
