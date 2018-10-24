@@ -21,7 +21,7 @@
         "source": "https://github.com/pimlie/php-unit-conversion"
     },
     "require": {
-        "php": ">=5.5.0",
+        "php": ">=5.6.0",
         "myclabs/php-enum": "^1.5"
     },
     "require-dev": {
