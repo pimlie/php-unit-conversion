@@ -2,8 +2,6 @@
 namespace PhpUnitConversionTest\Unit;
 
 use PHPUnit\Framework\TestCase;
-use PhpUnitConversion\Exception;
-use PhpUnitConversion\Unit;
 use PhpUnitConversion\Unit\Length;
 
 class LengthTest extends TestCase
@@ -100,6 +98,4 @@ class LengthTest extends TestCase
         $lengthUnit = new Length\NauticalMile(1);
         $this->assertEquals('1.852 km', Length\KiloMeter::from($lengthUnit)->format(3));
     }
-    
-    
 }

@@ -3,11 +3,17 @@ namespace PhpUnitConversion\Traits;
     
 trait HasRelativeFactor
 {
+    /**
+     * @return double
+     */
     public function getFactor()
     {
         return self::FACTOR;
     }
 
+    /**
+     * @return double|bool
+     */
     public function getAdditionPre()
     {
         if (defined('self::ADDITION_PRE')) {
@@ -17,6 +23,9 @@ trait HasRelativeFactor
         return false;
     }
 
+    /**
+     * @return double|bool
+     */
     public function getAdditionPost()
     {
         if (defined('self::ADDITION_POST')) {
@@ -26,6 +35,10 @@ trait HasRelativeFactor
         return false;
     }
 
+    /**
+     * @param double $baseValue
+     * @return double
+     */
     protected function fromBaseValue($baseValue)
     {
         $value = $baseValue;
@@ -48,6 +61,10 @@ trait HasRelativeFactor
         return parent::fromBaseValue($value);
     }
 
+    /**
+     * @param double|null $value
+     * @return double
+     */
     protected function toBaseValue($value = null)
     {
         if ($value === null) {
