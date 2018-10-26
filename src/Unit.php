@@ -12,10 +12,6 @@ class Unit
     protected $value;
 
     static protected $bitShift = 6;
-    static protected $typeMap;
-    static protected $factorMap;
-    static protected $symbolMap;
-    static protected $labelMap;
 
     public function __construct($value = null, $convertFromBaseUnit = false)
     {
@@ -166,7 +162,7 @@ class Unit
             $type = $intValue & ((1 << self::$bitShift) - 1);
             $value = ($intValue >> self::$bitShift) + ($value - $intValue);
 
-            $typeMap = static::buildTypeMap();
+            $typeMap = static::getBaseUnits();
             
             if (isset($typeMap[$type])) {
                 $baseClass = $typeMap[$type]::BASE_UNIT;
@@ -180,7 +176,7 @@ class Unit
             $numberPart = (float)$value;
             $symbolPart = trim(str_replace($numberPart, '', $value));
 
-            $symbolMap = static::buildSymbolMap();
+            $symbolMap = static::getSymbolMap();
             foreach ($symbolMap as $type => $typeSymbols) {
                 // If this method is not called from the Unit class,
                 // then skip all other unit types
@@ -198,7 +194,7 @@ class Unit
                 }
             }
 
-            $labelMap = static::buildLabelMap();
+            $labelMap = static::getLabelMap();
             foreach ($labelMap as $type => $typeLabels) {
                 // If this method is not called from the Unit class,
                 // then skip all other unit types
@@ -282,7 +278,7 @@ class Unit
             throw new InvocationException([self::class]);
         }
 
-        $factorMap = static::buildFactorMap();
+        $factorMap = static::getFactorMap();
         
         $classType = gettype($value);
         
@@ -385,101 +381,114 @@ class Unit
         }
     }
 
-    private static function buildTypeMap($rebuild = false)
+    /**
+     * @return Unit[]
+     */
+    public static function getBaseUnits()
     {
-        if ($rebuild || !isset(static::$typeMap)) {
-            static::$typeMap = [];
-            foreach (glob(__DIR__.'/Unit/*.php') as $unitFile) {
-                $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
-                
-                if (class_exists($unitClass)) {
-                    static::$typeMap[$unitClass::TYPE] = $unitClass;
-                }
+        static $typeMap = [];
+
+        if (empty($typeMap)) {
+            $typeRegistry = new TypeRegistry();
+            $typeRegistry->loadDirectory(__DIR__ . '/Unit/', __NAMESPACE__ . '\\Unit\\', '*.php');
+            $types = array_filter($typeRegistry->getTypes(), function ($type) {
+                return is_a($type, Unit::class, true);
+            });
+
+            foreach ($types as $type) {
+                /** @var Unit $typeObject */
+                $typeObject = new $type();
+                $typeMap[$typeObject::TYPE] = $typeObject;
             }
         }
 
-        return static::$typeMap;
+        return $typeMap;
     }
 
-
-    private static function buildFactorMap($rebuild = false)
+    private static function getFactorMap()
     {
-        if ($rebuild || !isset(static::$factorMap)) {
-            static::$factorMap = [];
-            
-            foreach (glob(__DIR__ .'/Unit/*/*.php') as $unitFile) {
-                $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
-    
-                if (class_exists($unitClass)) {
-                    $unitObject = new $unitClass(1);
-                    
-                    if (!isset(static::$factorMap[$unitObject::TYPE])) {
-                        static::$factorMap[$unitObject::TYPE] = [];
-                    }
+        static $factorMap = [];
 
-                    static::$factorMap[$unitObject::TYPE][$unitClass] = $unitObject->toBaseValue();
+        if (empty($factorMap)) {
+            foreach (self::getUnitTypes() as $type) {
+                /** @var Unit $unitObject */
+                $unitObject = new $type(1);
+
+                if (!array_key_exists($unitObject::TYPE, $factorMap)) {
+                    $factorMap[$unitObject::TYPE] = [];
                 }
+
+                $factorMap[$unitObject::TYPE][$type] = $unitObject->toBaseValue();
             }
 
-            foreach (static::$factorMap as $unitType => $values) {
-                asort(static::$factorMap[$unitType]);
+            foreach ($factorMap as &$factors) {
+                asort($factors);
             }
         }
 
-        return static::$factorMap;
+        return $factorMap;
     }
 
-    private static function buildSymbolMap($rebuild = false)
+    private static function getSymbolMap()
     {
-        if ($rebuild || !isset(static::$symbolMap)) {
-            static::$symbolMap = [];
+        static $symbolMap = [];
 
-            foreach (glob(__DIR__ .'/Unit/*/*.php') as $unitFile) {
-                $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
-    
-                if (class_exists($unitClass)) {
-                    $unitObject = new $unitClass;
-                    
-                    if (!isset(static::$symbolMap[$unitObject::TYPE])) {
-                        static::$symbolMap[$unitObject::TYPE] = [];
-                    }
-    
-                    $symbol = $unitObject->getSymbol();
-                    
-                    if (!empty($symbol)) {
-                        static::$symbolMap[$unitObject::TYPE][$symbol] = $unitClass;
-                    }
+        if (empty($symbolMap)) {
+            foreach (self::getUnitTypes() as $type) {
+                /** @var Unit $unitObject */
+                $unitObject = new $type();
+
+                if (!array_key_exists($unitObject::TYPE, $symbolMap)) {
+                    $symbolMap[$unitObject::TYPE] = [];
+                }
+
+                if (!empty($unitObject->getSymbol())) {
+                    $symbolMap[$unitObject::TYPE][$unitObject->getSymbol()] = $unitObject;
                 }
             }
         }
 
-        return static::$symbolMap;
+        return $symbolMap;
     }
 
-    private static function buildLabelMap($rebuild = false)
+    private static function getLabelMap()
     {
-        if ($rebuild || !isset(static::$labelMap)) {
-            static::$labelMap = [];
-            foreach (glob(__DIR__ .'/Unit/*/*.php') as $unitFile) {
-                $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
+        static $labelMap = [];
 
-                if (class_exists($unitClass)) {
-                    $unitObject = new $unitClass;
+        if (empty($labelMap)) {
+            foreach (self::getUnitTypes() as $type) {
+                /** @var Unit $unitObject */
+                $unitObject = new $type();
 
-                    if (!isset(static::$labelMap[$unitObject::TYPE])) {
-                        static::$labelMap[$unitObject::TYPE] = [];
-                    }
+                if (!array_key_exists($unitObject::TYPE, $labelMap)) {
+                    $labelMap[$unitObject::TYPE] = [];
+                }
 
-                    $label = $unitObject->getLabel();
-
-                    if (!empty($label)) {
-                        static::$labelMap[$unitObject::TYPE][$label] = $unitClass;
-                    }
+                if (empty($unitObject->getLabel())) {
+                    $labelMap[$unitObject::TYPE][$unitObject->getLabel()] = $unitObject;
                 }
             }
         }
 
-        return static::$labelMap;
+        return $labelMap;
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getUnitTypes()
+    {
+        static $unitTypes = [];
+
+        if (empty($unitTypes)) {
+            $typeRegistry = new TypeRegistry();
+            $typeRegistry->loadDirectory(__DIR__ . '/Unit/', __NAMESPACE__ . '\\Unit\\', '*/*.php');
+            $unitTypes = array_filter($typeRegistry->getTypes(), function ($type) {
+                return is_a($type, Unit::class, true);
+            });
+        }
+
+        return $unitTypes;
     }
 
     public function __invoke()
