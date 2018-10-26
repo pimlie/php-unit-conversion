@@ -8,7 +8,7 @@ use PhpUnitConversion\Exception\UnsupportedConversionException;
 
 class Unit
 {
-    /** @var double */
+    /** @var float */
     protected $value;
 
     /** @var int */
@@ -27,7 +27,7 @@ class Unit
     static protected $labelMap;
 
     /**
-     * @param double $value
+     * @param float $value
      * @param bool $convertFromBaseUnit
      */
     public function __construct($value = null, $convertFromBaseUnit = false)
@@ -38,7 +38,7 @@ class Unit
     }
 
     /**
-     * @return double
+     * @return float
      */
     public function getValue()
     {
@@ -46,7 +46,7 @@ class Unit
     }
 
     /**
-     * @param double $value
+     * @param float $value
      * @param bool $convertFromBaseUnit
      */
     public function setValue($value, $convertFromBaseUnit = false)
@@ -118,8 +118,8 @@ class Unit
     }
 
     /**
-     * @param double $baseValue
-     * @return bool|double
+     * @param float $baseValue
+     * @return bool|float
      */
     protected function fromBaseValue($baseValue)
     {
@@ -144,8 +144,8 @@ class Unit
     }
 
     /**
-     * @param double $value
-     * @return double
+     * @param float $value
+     * @return float
      */
     protected function toBaseValue($value = null)
     {
@@ -198,12 +198,12 @@ class Unit
      * Convert from/create a new Unit object for the supplied value
      *
      * Supplied value can either be:
-     * - an integer or double, in which case the value should contain the TYPE of the value
+     * - an integer or float, in which case the value should contain the TYPE of the value
      * - a unit class name (string), in which case the value to convert from will be set to 1
      * - an Unit instance, in which case the value from the instance will be used
      * - an string of the unit value with a symbol, eg '12 g' for 12 grams
      *
-     * @param int|double|string|Unit $value Either an integer, double, string or object
+     * @param int|float|string|Unit $value Either an integer, float, string or object
      *
      * @return Unit Returns a new Unit instance on success or throws an Exception
      * @throws UnsupportedConversionException
@@ -228,7 +228,7 @@ class Unit
             throw new InvalidArgumentException();
         } elseif ($classType === 'string' && !class_exists($classType)) {
             // make use of php's type juggling to find symbol
-            $numberPart = (double)$value;
+            $numberPart = (float)$value;
             $symbolPart = trim(str_replace($numberPart, '', $value));
 
             $symbolMap = static::buildSymbolMap();
@@ -240,7 +240,7 @@ class Unit
                 }
 
                 // make use of php's type juggling to find symbol
-                $numberPart = (double)$value;
+                $numberPart = (float)$value;
                 $symbolPart = trim(str_replace($numberPart, '', $value));
                 foreach ($typeSymbols as $symbol => $class) {
                     if ($symbolPart === $symbol) {
@@ -326,7 +326,7 @@ class Unit
      * Returns a new $unitClass instance which is euqal to the given value
      * but with a value closest to 1
      *
-     * @param int|double|Unit $value An integer, double or Unit object
+     * @param int|float|Unit $value An integer, float or Unit object
      *
      * @param System|null $system
      * @return Unit|bool Returns an Unit object
@@ -348,7 +348,7 @@ class Unit
         } elseif ($classType === 'object' && $value instanceof Unit) {
             $baseValue = $value->toBaseValue();
         } else {
-            throw new InvalidArgumentException('$value should be an integer, double or instance of Unit');
+            throw new InvalidArgumentException('$value should be an integer, float or instance of Unit');
         }
 
         if (is_array($factorMap[static::TYPE])) {
@@ -378,7 +378,7 @@ class Unit
     }
 
     /**
-     * @param Unit|int|double $args
+     * @param Unit|int|float $args
      * @return null|Unit
      * @throws UnsupportedUnitException
      */
@@ -409,7 +409,7 @@ class Unit
     }
 
     /**
-     * @param Unit|int|double $args
+     * @param Unit|int|float $args
      * @return null|Unit
      * @throws UnsupportedUnitException
      */
@@ -572,7 +572,7 @@ class Unit
     }
 
     /**
-     * @return double|int
+     * @return float|int
      */
     public function __invoke()
     {
