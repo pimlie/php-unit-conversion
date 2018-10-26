@@ -4,7 +4,7 @@ namespace PhpUnitConversion\Traits;
 trait HasFactor
 {
     /**
-     * @return double
+     * @return float
      */
     public function getFactor()
     {
@@ -12,7 +12,7 @@ trait HasFactor
     }
 
     /**
-     * @return double|bool
+     * @return float|bool
      */
     public function getAdditionPre()
     {
@@ -24,7 +24,7 @@ trait HasFactor
     }
 
     /**
-     * @return double|bool
+     * @return float|bool
      */
     public function getAdditionPost()
     {
@@ -36,8 +36,8 @@ trait HasFactor
     }
 
     /**
-     * @param double $baseValue
-     * @return double
+     * @param float $baseValue
+     * @return float
      */
     protected function fromBaseValue($baseValue)
     {
@@ -62,8 +62,8 @@ trait HasFactor
     }
 
     /**
-     * @param double|null $value
-     * @return double|null
+     * @param float|null $value
+     * @return float|null
      */
     protected function toBaseValue($value = null)
     {

@@ -4,7 +4,7 @@ namespace PhpUnitConversion\Traits;
 trait HasRelativeFactor
 {
     /**
-     * @return double
+     * @return float
      */
     public function getFactor()
     {
@@ -12,7 +12,7 @@ trait HasRelativeFactor
     }
 
     /**
-     * @return double|bool
+     * @return float|bool
      */
     public function getAdditionPre()
     {
@@ -24,7 +24,7 @@ trait HasRelativeFactor
     }
 
     /**
-     * @return double|bool
+     * @return float|bool
      */
     public function getAdditionPost()
     {
@@ -36,8 +36,8 @@ trait HasRelativeFactor
     }
 
     /**
-     * @param double $baseValue
-     * @return double
+     * @param float $baseValue
+     * @return float
      */
     protected function fromBaseValue($baseValue)
     {
@@ -62,8 +62,8 @@ trait HasRelativeFactor
     }
 
     /**
-     * @param double|null $value
-     * @return double
+     * @param float|null $value
+     * @return float
      */
     protected function toBaseValue($value = null)
     {
