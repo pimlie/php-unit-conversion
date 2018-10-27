@@ -226,7 +226,7 @@ class Unit
             }
 
             throw new InvalidArgumentException();
-        } elseif ($classType === 'string' && !class_exists($classType)) {
+        } elseif ($classType === 'string' && !class_exists($value)) {
             // make use of php's type juggling to find symbol
             $numberPart = (float)$value;
             $symbolPart = trim(str_replace($numberPart, '', $value));

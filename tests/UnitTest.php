@@ -33,7 +33,22 @@ class UnitTest extends TestCase
         $this->assertEquals(8, MyUnitType\HalfUnit::from($unit)->getValue());
         $this->assertEquals(2, MyUnitType\DoubleUnitRelativeFromHalf::from($unit)->getValue());
     }
-    
+
+    public function testAdditions()
+    {
+        $unit = new MyUnitType\OneUnit(1);
+        $this->assertEquals(0, MyUnitType\AdditionUnit::from($unit)->getValue());
+
+        $unit = new MyUnitType\AdditionUnit(1);
+        $this->assertEquals(3, MyUnitType\OneUnit::from($unit)->getValue());
+
+        $unit = new MyUnitType\OneUnit(1);
+        $this->assertEquals(0.25, MyUnitType\RelativeAdditionUnit::from($unit)->getValue());
+
+        $unit = new MyUnitType\RelativeAdditionUnit(1);
+        $this->assertEquals(4, MyUnitType\OneUnit::from($unit)->getValue());
+    }
+
     public function testTypeValues()
     {
         $kiloGrams = new Mass\KiloGram(1);
@@ -77,10 +92,55 @@ class UnitTest extends TestCase
         $this->assertEquals('1.874 lb', $unit->format());
     }
 
+    public function testNearestInteger()
+    {
+        $unit = Mass::nearest(1);
+
+        $this->assertInstanceOf(Mass\Gram::class, $unit);
+    }
+
+    public function testNearestUnsupported()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $unit = Mass::nearest("1");
+    }
+
     public function testInvalidInvocation()
     {
         $this->expectException(Exception::class);
         
         Unit::nearest(new Mass\Gram(1));
+    }
+
+    public function testLabel()
+    {
+        $unit = new MyUnitType\OneUnit(1);
+        
+        $this->assertEquals('unit', $unit->getLabel());
+    }
+
+    public function testToString()
+    {
+        $unit = new MyUnitType\OneUnit(1);
+        
+        $this->assertEquals('1 u', (string)$unit);
+    }
+
+    public function testFromString()
+    {
+        $unit = Mass::from('1 g');
+        $this->assertInstanceOf(Mass\Gram::class, $unit);
+
+        $unit = Mass::from('1 gram');
+        $this->assertInstanceOf(Mass\Gram::class, $unit);
+    }
+
+    public function testUnsupportedFrom()
+    {
+        $this->expectException(Exception::class);
+
+        $unit = new Unit\Length\Meter(1);
+        $unit->from(Mass\Gram::class);
     }
 }
