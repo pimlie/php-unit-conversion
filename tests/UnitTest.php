@@ -73,7 +73,16 @@ class UnitTest extends TestCase
         $this->assertInstanceOf(Mass\HectoGram::class, $unit);
     }
 
-    public function testNearestUnit90()
+    public function testNearestUnitSmallerSmallest()
+    {
+        $grams = new Mass\YoctoGram(0.001);
+
+        $unit = Mass::nearest($grams);
+
+        $this->assertInstanceOf(Mass\YoctoGram::class, $unit);
+    }
+
+    public function testNearestUnitObject()
     {
         $grams = new Mass\Gram(900);
         
