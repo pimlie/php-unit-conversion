@@ -8,7 +8,7 @@ use PhpUnitConversion\Traits\BaseUnit;
 class Meter extends Length implements Metric
 {
     use BaseUnit;
-    
+
     const SYMBOL = 'm';
     const LABEL = 'meter';
 }

@@ -7,7 +7,7 @@ use PhpUnitConversion\Traits\BaseUnit;
 class Quantity extends Amount
 {
     use BaseUnit;
-    
+
     const FACTOR = 1;
 
     const SYMBOL = 'qty';

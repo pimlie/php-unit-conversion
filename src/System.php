@@ -3,5 +3,5 @@ namespace PhpUnitConversion;
 
 interface System
 {
-    
+
 }

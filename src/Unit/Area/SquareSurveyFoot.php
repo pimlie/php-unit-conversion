@@ -10,7 +10,7 @@ class SquareSurveyFoot extends Area implements USC
     use HasFactor;
 
     const FACTOR = 0.0929034116133;
-    
+
     const SYMBOL = 'ft2';
     const LABEL = 'square survey foot';
 }

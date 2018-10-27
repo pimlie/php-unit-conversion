@@ -5,5 +5,5 @@ use PhpUnitConversion\System;
 
 interface Metric extends System
 {
-    
+
 }

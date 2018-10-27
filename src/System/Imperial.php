@@ -5,5 +5,5 @@ use PhpUnitConversion\System;
 
 interface Imperial extends System
 {
-    
+
 }

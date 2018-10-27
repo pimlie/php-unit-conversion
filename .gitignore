@@ -1,4 +1,6 @@
 .git
+clover.xml
+coveralls-upload.json
 composer.lock
 composer.phar
 build

@@ -6,9 +6,9 @@ use PhpUnitConversion\Traits\HasRelativeFactor;
 class Stone extends Pound
 {
     use HasRelativeFactor;
-    
+
     const FACTOR = 14;
-    
+
     const SYMBOL = 'st';
     const LABEL = 'stone';
 }

@@ -1,5 +1,7 @@
 # Php Unit Conversion
 
+<a href="https://travis-ci.org/pimlie/php-unit-conversion"><img src="https://api.travis-ci.org/pimlie/php-unit-conversion.svg?branch=master" alt="Build Status"></a>
+[![Coverage Status](https://coveralls.io/repos/github/pimlie/php-unit-conversion/badge.svg?branch=master)](https://coveralls.io/github/pimlie/php-unit-conversion?branch=master)
 [![Latest Stable Version](https://img.shields.io/packagist/v/php-unit-conversion/php-unit-conversion.svg)](https://packagist.org/packages/php-unit-conversion/php-unit-conversion)
 [![Total Downloads](https://img.shields.io/packagist/dt/php-unit-conversion/php-unit-conversion.svg)](https://packagist.org/packages/php-unit-conversion/php-unit-conversion)
 [![License](https://img.shields.io/github/license/pimlie/php-unit-conversion.svg)](https://packagist.org/packages/php-unit-conversion/php-unit-conversion)

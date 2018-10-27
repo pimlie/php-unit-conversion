@@ -6,5 +6,5 @@ use PhpUnitConversion\System\USC;
 
 class Pound extends AvoirdupoisPound implements Imperial, USC
 {
-    
+
 }

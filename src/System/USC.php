@@ -5,5 +5,5 @@ use PhpUnitConversion\System;
 
 interface USC extends System
 {
-    
+
 }
