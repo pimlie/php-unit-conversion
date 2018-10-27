@@ -195,7 +195,7 @@ class Unit
     }
 
     /**
-     * Convert from/create a new Unit object for the supplied value
+     * Convert from/create a new Unit instance for the supplied value
      *
      * Supplied value can either be:
      * - an integer or float, in which case the value should contain the TYPE of the value
@@ -203,7 +203,7 @@ class Unit
      * - an Unit instance, in which case the value from the instance will be used
      * - an string of the unit value with a symbol, eg '12 g' for 12 grams
      *
-     * @param int|float|string|Unit $value Either an integer, float, string or object
+     * @param int|float|string|Unit $value Either an integer, float, string or Unit instance
      *
      * @return Unit Returns a new Unit instance on success or throws an Exception
      * @throws UnsupportedConversionException
@@ -292,7 +292,7 @@ class Unit
      *
      * Returns a new $unitClass instance set to the value that is equal to the value of the current Unit instance
      *
-     * @param mixed $unitClass An Unit class name or object
+     * @param mixed $unitClass An Unit class name or instance
      *
      * @return Unit|bool A new Unit instance as defined by $unitClass set to the value of the current Unit
      * @throws UnsupportedConversionException
@@ -326,10 +326,10 @@ class Unit
      * Returns a new $unitClass instance which is equal to the given value
      * but with a value closest to 1
      *
-     * @param int|float|Unit $value An integer, float or Unit object
+     * @param int|float|Unit $value An integer, float or Unit instance
      * @param string|null $system A System class name
      *
-     * @return Unit|bool Returns an Unit object
+     * @return Unit|bool Returns an Unit instance
      * @throws InvocationException
      * @throws UnsupportedConversionException
      */
@@ -348,7 +348,7 @@ class Unit
         } elseif ($classType === 'object' && $value instanceof Unit) {
             $baseValue = $value->toBaseValue();
         } else {
-            throw new InvalidArgumentException('$value should be an integer, float or instance of Unit');
+            throw new InvalidArgumentException('$value should be an integer, float or Unit instance');
         }
 
         if (is_array($factorMap[static::TYPE])) {
