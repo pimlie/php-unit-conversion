@@ -359,7 +359,7 @@ class Unit
                             $lastUnitClass = $unitClass;
                         }
 
-                        if ($classType === 'object' && $classType instanceof Unit) {
+                        if ($classType === 'object' && $value instanceof Unit) {
                             return $value->to($lastUnitClass);
                         } else {
                             $unitObject = new $lastUnitClass;
