@@ -5,7 +5,7 @@ php:
   - '7.1'
   - '7.2'
 env:
-  - COMPOSER_PROCESS_TIMEOUT=1200
+  - COMPOSER_PROCESS_TIMEOUT=4800
 install:
   - travis_retry composer install --no-interaction
 script:
