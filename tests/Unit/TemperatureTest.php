@@ -57,6 +57,6 @@ class TemperatureTest extends TestCase
     public function testRomerToRankine()
     {
         $tempUnit = new Temperature\Romer(50);
-        $this->assertEquals('637.38 °R', Temperature\Rankine::from($tempUnit)->format(2))
+        $this->assertEquals('637.38 °R', Temperature\Rankine::from($tempUnit)->format(2));
     }
 }
