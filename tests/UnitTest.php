@@ -3,7 +3,6 @@ namespace PhpUnitConversionTest;
 
 use PHPUnit\Framework\TestCase;
 use PhpUnitConversion\Exception;
-use PhpUnitConversion\System;
 use PhpUnitConversion\Unit;
 use PhpUnitConversion\Unit\Mass;
 use PhpUnitConversionTest\Fixtures\MyUnitType;

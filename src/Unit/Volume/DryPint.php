@@ -14,4 +14,3 @@ class DryPint extends Volume implements USC
     const SYMBOL = 'pt';
     const LABEL = '(dry) pt';
 }
-

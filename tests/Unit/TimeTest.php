@@ -11,6 +11,4 @@ class TimeTest extends TestCase
         $timeUnit = new Time\Second(30);
         $this->assertEquals('0.5 m', Time\Minute::from($timeUnit)->format(1));
     }
-    
-    
 }

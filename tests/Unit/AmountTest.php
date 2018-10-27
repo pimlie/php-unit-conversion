@@ -2,8 +2,6 @@
 namespace PhpUnitConversionTest\Unit;
 
 use PHPUnit\Framework\TestCase;
-use PhpUnitConversion\Exception;
-use PhpUnitConversion\Unit;
 use PhpUnitConversion\Unit\Amount;
 
 class AmountTest extends TestCase

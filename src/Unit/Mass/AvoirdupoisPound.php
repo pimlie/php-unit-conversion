@@ -1,7 +1,6 @@
 <?php
 namespace PhpUnitConversion\Unit\Mass;
 
-use PhpUnitConversion\System\Imperial;
 use PhpUnitConversion\Unit\Mass;
 use PhpUnitConversion\Traits\HasFactor;
 

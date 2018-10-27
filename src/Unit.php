@@ -2,21 +2,34 @@
 namespace PhpUnitConversion;
 
 use InvalidArgumentException;
-use PhpUnitConversion\System;
 use PhpUnitConversion\Exception\InvocationException;
 use PhpUnitConversion\Exception\UnsupportedUnitException;
 use PhpUnitConversion\Exception\UnsupportedConversionException;
 
 class Unit
 {
+    /** @var float */
     protected $value;
 
+    /** @var int */
     static protected $bitShift = 6;
+
+    /** @var array */
     static protected $typeMap;
+
+    /** @var array */
     static protected $factorMap;
+
+    /** @var array */
     static protected $symbolMap;
+
+    /** @var array */
     static protected $labelMap;
 
+    /**
+     * @param float $value
+     * @param bool $convertFromBaseUnit
+     */
     public function __construct($value = null, $convertFromBaseUnit = false)
     {
         if ($value !== null) {
@@ -24,11 +37,18 @@ class Unit
         }
     }
 
+    /**
+     * @return float
+     */
     public function getValue()
     {
         return $this->value;
     }
 
+    /**
+     * @param float $value
+     * @param bool $convertFromBaseUnit
+     */
     public function setValue($value, $convertFromBaseUnit = false)
     {
         if ($convertFromBaseUnit) {
@@ -38,6 +58,9 @@ class Unit
         }
     }
 
+    /**
+     * @return string|bool
+     */
     public function getFactor()
     {
         if (defined('static::FACTOR')) {
@@ -45,7 +68,10 @@ class Unit
         }
         return false;
     }
-    
+
+    /**
+     * @return string|bool
+     */
     public function getAdditionPre()
     {
         if (defined('static::ADDITION_PRE')) {
@@ -55,6 +81,9 @@ class Unit
         return false;
     }
 
+    /**
+     * @return string|bool
+     */
     public function getAdditionPost()
     {
         if (defined('static::ADDITION_POST')) {
@@ -64,6 +93,9 @@ class Unit
         return false;
     }
 
+    /**
+     * @return string
+     */
     public function getSymbol()
     {
         $symbol = '';
@@ -73,6 +105,9 @@ class Unit
         return $symbol;
     }
 
+    /**
+     * @return string
+     */
     public function getLabel()
     {
         $label = '';
@@ -82,6 +117,10 @@ class Unit
         return $label;
     }
 
+    /**
+     * @param float $baseValue
+     * @return bool|float
+     */
     protected function fromBaseValue($baseValue)
     {
         $value = $baseValue;
@@ -103,7 +142,11 @@ class Unit
 
         return $value;
     }
-    
+
+    /**
+     * @param float $value
+     * @return float
+     */
     protected function toBaseValue($value = null)
     {
         if ($value === null) {
@@ -127,14 +170,21 @@ class Unit
 
         return $value;
     }
-    
+
+    /**
+     * @return Unit
+     */
     protected function toBaseUnit()
     {
         $baseUnitClass = static::BASE_UNIT;
         
         return new $baseUnitClass($this->toBaseValue());
     }
-    
+
+    /**
+     * @param Unit $unit
+     * @return Unit|null
+     */
     protected static function createFromBaseUnit(Unit $unit)
     {
         $baseUnitClass = static::BASE_UNIT;
@@ -143,19 +193,20 @@ class Unit
             return new static($unit->getValue(), true);
         }
     }
-    
+
     /**
-     * Convert from/create a new Unit object for the supplied value
+     * Convert from/create a new Unit instance for the supplied value
      *
      * Supplied value can either be:
-     * - an integer or double, in which case the value should contain the TYPE of the value
-     * - a unit class name (string), in which case the value to convert from will be set to 1
-     * - an Unit instance, in which case the value from the instance will be used
-     * - an string of the unit value with a symbol, eg '12 g' for 12 grams
+     * - an integer or float, in which case the value should contain the TYPE of the value
+     * - a Unit class name (string), in which case the value to convert from will be set to 1
+     * - a Unit instance, in which case the value from the instance will be used
+     * - a string of the unit value with a symbol, eg '12 g' for 12 grams
      *
-     * @param mixed $value Either an integer, double, string or object
+     * @param int|float|string|Unit $value Either an integer, float, string or Unit instance
      *
      * @return Unit Returns a new Unit instance on success or throws an Exception
+     * @throws UnsupportedConversionException
      */
     public static function from($value)
     {
@@ -231,17 +282,20 @@ class Unit
                 
                 return self::createFromBaseUnit($baseUnit);
             }
+        } else {
+            throw new UnsupportedConversionException();
         }
     }
-    
+
     /**
      * Convert the current Unit instance to a new one
      *
      * Returns a new $unitClass instance set to the value that is equal to the value of the current Unit instance
      *
-     * @param mixed $unitClass An Unit class name or object
+     * @param mixed $unitClass A Unit class name or instance
      *
-     * @return A new Unit instance as defined by $unitClass set to the value of the current Unit
+     * @return Unit|bool A new Unit instance as defined by $unitClass set to the value of the current Unit
+     * @throws UnsupportedConversionException
      */
     public function to($unitClass)
     {
@@ -265,16 +319,19 @@ class Unit
         }
         return false;
     }
-    
+
     /**
      * Finds the nearest unit to a given value
      *
-     * Returns a new $unitClass instance which is euqal to the given value
+     * Returns a new $unitClass instance which is equal to the given value
      * but with a value closest to 1
      *
-     * @param mixed $value An integer, double or Unit object
+     * @param int|float|Unit $value An integer, float or Unit instance
+     * @param string|null $system A System class name
      *
-     * @return Returns an Unit object
+     * @return Unit|bool Returns a Unit instance
+     * @throws InvocationException
+     * @throws UnsupportedConversionException
      */
     public static function nearest($value, $system = null)
     {
@@ -291,7 +348,7 @@ class Unit
         } elseif ($classType === 'object' && $value instanceof Unit) {
             $baseValue = $value->toBaseValue();
         } else {
-            throw new InvalidArgumentException('$value should be an integer, double or instance of Unit');
+            throw new InvalidArgumentException('$value should be an integer, float or Unit instance');
         }
 
         if (is_array($factorMap[static::TYPE])) {
@@ -316,8 +373,15 @@ class Unit
                 }
             }
         }
+
+        throw new UnsupportedConversionException();
     }
 
+    /**
+     * @param Unit|int|float $args
+     * @return null|Unit
+     * @throws UnsupportedUnitException
+     */
     public function add()
     {
         $numArgs = func_num_args();
@@ -344,6 +408,11 @@ class Unit
         return self::createFromBaseUnit(new $baseUnitClass($value));
     }
 
+    /**
+     * @param Unit|int|float $args
+     * @return null|Unit
+     * @throws UnsupportedUnitException
+     */
     public function substract()
     {
         $numArgs = func_num_args();
@@ -370,6 +439,11 @@ class Unit
         return self::createFromBaseUnit(new $baseUnitClass($value));
     }
 
+    /**
+     * @param int $precision
+     * @param bool $addSymbol
+     * @return string
+     */
     public function format($precision = 3, $addSymbol = true)
     {
         $symbol = $this->getSymbol();
@@ -385,6 +459,10 @@ class Unit
         }
     }
 
+    /**
+     * @param bool $rebuild
+     * @return string[]
+     */
     private static function buildTypeMap($rebuild = false)
     {
         if ($rebuild || !isset(static::$typeMap)) {
@@ -401,7 +479,10 @@ class Unit
         return static::$typeMap;
     }
 
-
+    /**
+     * @param bool $rebuild
+     * @return array
+     */
     private static function buildFactorMap($rebuild = false)
     {
         if ($rebuild || !isset(static::$factorMap)) {
@@ -429,6 +510,10 @@ class Unit
         return static::$factorMap;
     }
 
+    /**
+     * @param bool $rebuild
+     * @return array
+     */
     private static function buildSymbolMap($rebuild = false)
     {
         if ($rebuild || !isset(static::$symbolMap)) {
@@ -456,6 +541,10 @@ class Unit
         return static::$symbolMap;
     }
 
+    /**
+     * @param bool $rebuild
+     * @return array[]
+     */
     private static function buildLabelMap($rebuild = false)
     {
         if ($rebuild || !isset(static::$labelMap)) {
@@ -482,12 +571,18 @@ class Unit
         return static::$labelMap;
     }
 
+    /**
+     * @return float|int
+     */
     public function __invoke()
     {
         $intBase = (int)$this->toBaseValue();
         return ($intBase << self::$bitShift) + static::TYPE + ($this->toBaseValue() - $intBase);
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         $symbol = $this->getSymbol();
