@@ -1,6 +1,6 @@
 <?php
 namespace PhpUnitConversion\Traits;
-    
+
 trait HasFactor
 {
     /**

@@ -177,7 +177,7 @@ class Unit
     protected function toBaseUnit()
     {
         $baseUnitClass = static::BASE_UNIT;
-        
+
         return new $baseUnitClass($this->toBaseValue());
     }
 
@@ -211,17 +211,17 @@ class Unit
     public static function from($value)
     {
         $classType = gettype($value);
-        
+
         if ($classType === 'integer' || $classType === 'double') {
             $intValue = (int)$value;
             $type = $intValue & ((1 << self::$bitShift) - 1);
             $value = ($intValue >> self::$bitShift) + ($value - $intValue);
 
             $typeMap = static::buildTypeMap();
-            
+
             if (isset($typeMap[$type])) {
                 $baseClass = $typeMap[$type]::BASE_UNIT;
-                
+
                 return new $baseClass($value);
             }
 
@@ -275,11 +275,11 @@ class Unit
                 throw new UnsupportedConversionException([static::TYPE, $value::TYPE]);
             } else {
                 $baseUnit = $value->toBaseUnit();
-                
+
                 if ($baseUnit instanceof static) {
                     return $baseUnit;
                 }
-                
+
                 return self::createFromBaseUnit($baseUnit);
             }
         } else {
@@ -300,7 +300,7 @@ class Unit
     public function to($unitClass)
     {
         $baseUnit = $this->toBaseUnit();
-        
+
         $classType = gettype($unitClass);
 
         if ($classType === 'string') {
@@ -340,9 +340,9 @@ class Unit
         }
 
         $factorMap = static::buildFactorMap();
-        
+
         $classType = gettype($value);
-        
+
         if ($classType === 'integer' || $classType === 'double') {
             $baseValue = $value;
         } elseif ($classType === 'object' && $value instanceof Unit) {
@@ -358,13 +358,13 @@ class Unit
                         if (!isset($lastUnitClass)) {
                             $lastUnitClass = $unitClass;
                         }
-                        
+
                         if ($classType === 'object' && $classType instanceof Unit) {
                             return $value->to($lastUnitClass);
                         } else {
                             $unitObject = new $lastUnitClass;
                             $baseClass = $unitObject::BASE_UNIT;
-                            
+
                             return (new $baseClass($baseValue))->to($unitObject);
                         }
                     }
@@ -388,9 +388,9 @@ class Unit
         if (!$numArgs) {
             throw new InvalidArgumentException('add expects at least one Unit argument');
         }
-        
+
         $value = $this->toBaseValue();
-        
+
         $args = func_get_args();
         for ($i = 0; $i < $numArgs; $i++) {
             if (!($args[$i] instanceof Unit)) {
@@ -403,7 +403,7 @@ class Unit
 
             $value+= $args[$i]->toBaseUnit()->getValue();
         }
-        
+
         $baseUnitClass = static::BASE_UNIT;
         return self::createFromBaseUnit(new $baseUnitClass($value));
     }
@@ -419,9 +419,9 @@ class Unit
         if (!$numArgs) {
             throw new InvalidArgumentException('substract expects at least one Unit argument');
         }
-        
+
         $value = $this->toBaseUnit()->getValue();
-        
+
         $args = func_get_args();
         for ($i = 0; $i < $numArgs; $i++) {
             if (!($args[$i] instanceof Unit)) {
@@ -431,10 +431,10 @@ class Unit
             if (static::TYPE !== $args[$i]::TYPE) {
                 throw new UnsupportedUnitException([$args[$i]::TYPE]);
             }
-            
+
             $value-= $args[$i]->toBaseUnit()->getValue();
         }
-        
+
         $baseUnitClass = static::BASE_UNIT;
         return self::createFromBaseUnit(new $baseUnitClass($value));
     }
@@ -447,14 +447,14 @@ class Unit
     public function format($precision = 3, $addSymbol = true)
     {
         $symbol = $this->getSymbol();
-        
+
         if (!empty($symbol)) {
             $format = '%02.' . $precision . 'f %s';
-            
+
             return sprintf($format, $this->getValue(), $symbol);
         } else {
             $format = '%02.' . $precision . 'f';
-            
+
             return sprintf($format, $this->getValue());
         }
     }
@@ -468,8 +468,8 @@ class Unit
         if ($rebuild || !isset(static::$typeMap)) {
             static::$typeMap = [];
             foreach (glob(__DIR__.'/Unit/*.php') as $unitFile) {
-                $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
-                
+                $unitClass = __NAMESPACE__ . str_replace([__DIR__, '.php', '/'], ['', '', '\\'], $unitFile);
+
                 if (class_exists($unitClass)) {
                     static::$typeMap[$unitClass::TYPE] = $unitClass;
                 }
@@ -487,13 +487,13 @@ class Unit
     {
         if ($rebuild || !isset(static::$factorMap)) {
             static::$factorMap = [];
-            
+
             foreach (glob(__DIR__ .'/Unit/*/*.php') as $unitFile) {
-                $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
-    
+                $unitClass = __NAMESPACE__ . str_replace([__DIR__, '.php', '/'], ['', '', '\\'], $unitFile);
+
                 if (class_exists($unitClass)) {
                     $unitObject = new $unitClass(1);
-                    
+
                     if (!isset(static::$factorMap[$unitObject::TYPE])) {
                         static::$factorMap[$unitObject::TYPE] = [];
                     }
@@ -520,17 +520,17 @@ class Unit
             static::$symbolMap = [];
 
             foreach (glob(__DIR__ .'/Unit/*/*.php') as $unitFile) {
-                $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
-    
+                $unitClass = __NAMESPACE__ . str_replace([__DIR__, '.php', '/'], ['', '', '\\'], $unitFile);
+
                 if (class_exists($unitClass)) {
                     $unitObject = new $unitClass;
-                    
+
                     if (!isset(static::$symbolMap[$unitObject::TYPE])) {
                         static::$symbolMap[$unitObject::TYPE] = [];
                     }
-    
+
                     $symbol = $unitObject->getSymbol();
-                    
+
                     if (!empty($symbol)) {
                         static::$symbolMap[$unitObject::TYPE][$symbol] = $unitClass;
                     }
@@ -550,7 +550,7 @@ class Unit
         if ($rebuild || !isset(static::$labelMap)) {
             static::$labelMap = [];
             foreach (glob(__DIR__ .'/Unit/*/*.php') as $unitFile) {
-                $unitClass = __NAMESPACE__ . str_replace(array(__DIR__, '.php', '/'), array('', '', '\\'), $unitFile);
+                $unitClass = __NAMESPACE__ . str_replace([__DIR__, '.php', '/'], ['', '', '\\'], $unitFile);
 
                 if (class_exists($unitClass)) {
                     $unitObject = new $unitClass;

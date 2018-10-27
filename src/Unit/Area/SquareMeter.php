@@ -8,7 +8,7 @@ use PhpUnitConversion\Traits\BaseUnit;
 class SquareMeter extends Area implements Metric
 {
     use BaseUnit;
-    
+
     const FACTOR = 1;
 
     const SYMBOL = 'm2';

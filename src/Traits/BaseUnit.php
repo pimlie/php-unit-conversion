@@ -1,6 +1,6 @@
 <?php
 namespace PhpUnitConversion\Traits;
-    
+
 use PhpUnitConversion\Unit;
 
 trait BaseUnit

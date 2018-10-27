@@ -6,5 +6,5 @@ use PhpUnitConversion\System\USC;
 
 class Yard extends InternationalYard implements Imperial, USC
 {
-    
+
 }
