@@ -323,12 +323,12 @@ class Unit
     /**
      * Finds the nearest unit to a given value
      *
-     * Returns a new $unitClass instance which is euqal to the given value
+     * Returns a new $unitClass instance which is equal to the given value
      * but with a value closest to 1
      *
      * @param int|float|Unit $value An integer, float or Unit object
+     * @param string|null $system A System class name
      *
-     * @param System|null $system
      * @return Unit|bool Returns an Unit object
      * @throws InvocationException
      * @throws UnsupportedConversionException
