@@ -199,9 +199,9 @@ class Unit
      *
      * Supplied value can either be:
      * - an integer or float, in which case the value should contain the TYPE of the value
-     * - a unit class name (string), in which case the value to convert from will be set to 1
-     * - an Unit instance, in which case the value from the instance will be used
-     * - an string of the unit value with a symbol, eg '12 g' for 12 grams
+     * - a Unit class name (string), in which case the value to convert from will be set to 1
+     * - a Unit instance, in which case the value from the instance will be used
+     * - a string of the unit value with a symbol, eg '12 g' for 12 grams
      *
      * @param int|float|string|Unit $value Either an integer, float, string or Unit instance
      *
@@ -292,7 +292,7 @@ class Unit
      *
      * Returns a new $unitClass instance set to the value that is equal to the value of the current Unit instance
      *
-     * @param mixed $unitClass An Unit class name or instance
+     * @param mixed $unitClass A Unit class name or instance
      *
      * @return Unit|bool A new Unit instance as defined by $unitClass set to the value of the current Unit
      * @throws UnsupportedConversionException
@@ -329,7 +329,7 @@ class Unit
      * @param int|float|Unit $value An integer, float or Unit instance
      * @param string|null $system A System class name
      *
-     * @return Unit|bool Returns an Unit instance
+     * @return Unit|bool Returns a Unit instance
      * @throws InvocationException
      * @throws UnsupportedConversionException
      */
