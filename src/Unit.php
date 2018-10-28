@@ -539,7 +539,7 @@ class Unit
                     $labelMap[$unitObject::TYPE] = [];
                 }
 
-                if (empty($unitObject->getLabel())) {
+                if (!empty($unitObject->getLabel())) {
                     $labelMap[$unitObject::TYPE][$unitObject->getLabel()] = $unitObject;
                 }
             }
