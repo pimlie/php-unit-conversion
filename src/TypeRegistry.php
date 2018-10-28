@@ -23,7 +23,7 @@ class TypeRegistry
             }
         }
 
-        $this->types = array_unique($this->types + $classes);
+        $this->types = array_unique(array_merge($this->types, $classes));
     }
 
     /**
