@@ -219,7 +219,7 @@ class Unit
             $numberPart = (float)$value;
             $symbolPart = trim(str_replace($numberPart, '', $value));
 
-            $symbolMap = static::getSymbolMap();
+            $symbolMap = static::getUnitsBySymbol();
             foreach ($symbolMap as $type => $typeSymbols) {
                 // If this method is not called from the Unit class,
                 // then skip all other unit types
@@ -237,7 +237,7 @@ class Unit
                 }
             }
 
-            $labelMap = static::getLabelMap();
+            $labelMap = static::getUnitsByLabel();
             foreach ($labelMap as $type => $typeLabels) {
                 // If this method is not called from the Unit class,
                 // then skip all other unit types
@@ -501,7 +501,7 @@ class Unit
     /**
      * @return array
      */
-    private static function getSymbolMap()
+    public static function getUnitsBySymbol()
     {
         static $symbolMap = [];
 
@@ -526,7 +526,7 @@ class Unit
     /**
      * @return array[]
      */
-    private static function getLabelMap()
+    public static function getUnitsByLabel()
     {
         static $labelMap = [];
 
