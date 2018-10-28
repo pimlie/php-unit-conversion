@@ -206,7 +206,7 @@ class Unit
             $value = ($intValue >> self::$bitShift) + ($value - $intValue);
 
             $typeMap = static::getBaseUnits();
-            
+
             if (isset($typeMap[$type])) {
                 $baseClass = $typeMap[$type]::BASE_UNIT;
 
@@ -328,7 +328,7 @@ class Unit
         }
 
         $factorMap = static::getFactorMap();
-        
+
         $classType = gettype($value);
 
         if ($classType === 'integer' || $classType === 'double') {
