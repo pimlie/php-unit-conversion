@@ -15,6 +15,9 @@
             "role":     "Developer"
         }
     ],
+    "config": {
+        "process-timeout": 0
+    },
     "support": {
         "email":  "pimlie@hotmail.com",
         "issues": "https://github.com/pimlie/php-unit-conversion/issues",
