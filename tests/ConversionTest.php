@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpUnitConversionTest\Unit;
+namespace PhpUnitConversionTest;
 
 use Generator;
 use PHPUnit\Framework\TestCase;

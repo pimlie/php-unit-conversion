@@ -7,8 +7,8 @@ php:
 install:
   - travis_retry composer install --no-interaction
 script:
-  - php vendor/bin/phpcs src/*
-  - php vendor/bin/phpunit --coverage-clover clover.xml
+  - composer cs
+  - if [[ "${TRAVIS_PHP_VERSION:0:3}" != "7.2" ]]; then composer test:standard; fi
+  - if [[ "${TRAVIS_PHP_VERSION:0:3}" == "7.2" ]]; then composer test:all -- --coverage-clover clover.xml; fi
 after_success:
   - travis_retry php vendor/bin/php-coveralls -v --coverage_clover clover.xml --json_path coveralls-upload.json
-

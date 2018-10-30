@@ -8,8 +8,13 @@
     stopOnFailure="false">
 
     <testsuites>
-        <testsuite name="PhpUnitConversion Test Suite">
-            <directory>tests</directory>
+        <testsuite name="Standard_Tests">
+            <file>tests/UnitTest.php</file>
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Extended_Conversion_Tests">
+            <file>tests/ParsingTest.php</file>
+            <file>tests/ConversionTest.php</file>
         </testsuite>
     </testsuites>
 
