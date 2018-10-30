@@ -175,6 +175,23 @@ $addGrams = $massUnit->add(new Time\Second(60) );
 // throws a PhpUnitConversion\Exception\UnsupportedUnitException
 ```
 
+## Adding custom units
+```
+use PhpUnitConversion\Map as UnitMap;
+
+/* You can add custom units by calling the add method on UnitMap.
+ * The first argument should be the path to a directory containing UnitTypes files with
+ * the corresponding Unit files in a subfolder.
+ * The second argument is the namespace that you use in your files
+ */
+UnitMap::add('YOUR_UNITS_DIR_OR_FILE', 'YOUR_UNITS_NAMESPACE');
+
+/* If you only want add one unit to an existing unit type, add a third argument with the class name
+ * of the unit type you want your unit to add to
+ */
+UnitMap::add('/path/to/TwoTableSpoons.php', '\\MyUnits', PhpUnitConversion\Unit\Volume::class);
+```
+
 ## Contributing
 
 Please check [Contributing](CONTRIBUTING.md) for details.

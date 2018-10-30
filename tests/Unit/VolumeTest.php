@@ -11,7 +11,7 @@ class VolumeTest extends TestCase
         $volumeUnit = new Volume\Gallon(1);
         $this->assertEquals('4.546 l', Volume\Liter::from($volumeUnit)->format(3));
     }
-    
+
     public function testFromQuart()
     {
         $volumeUnit = new Volume\Quart(2);

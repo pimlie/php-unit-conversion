@@ -2,6 +2,7 @@
 namespace PhpUnitConversion;
 
 use InvalidArgumentException;
+use PhpUnitConversion\Map as UnitMap;
 use PhpUnitConversion\Exception\InvocationException;
 use PhpUnitConversion\Exception\UnsupportedUnitException;
 use PhpUnitConversion\Exception\UnsupportedConversionException;
@@ -205,11 +206,10 @@ class Unit
             $type = $intValue & ((1 << self::$bitShift) - 1);
             $value = ($intValue >> self::$bitShift) + ($value - $intValue);
 
-            $typeMap = static::getBaseUnits();
+            $typeClass = UnitMap\Type::byType($type);
 
-            if (isset($typeMap[$type])) {
-                $baseClass = $typeMap[$type]::BASE_UNIT;
-
+            if ($typeClass) {
+                $baseClass = $typeClass::BASE_UNIT;
                 return new $baseClass($value);
             }
 
@@ -219,7 +219,7 @@ class Unit
             $numberPart = (float)$value;
             $symbolPart = trim(str_replace($numberPart, '', $value));
 
-            $symbolMap = static::getUnitsBySymbol();
+            $symbolMap = UnitMap\Symbol::get();
             foreach ($symbolMap as $type => $typeSymbols) {
                 // If this method is not called from the Unit class,
                 // then skip all other unit types
@@ -237,7 +237,7 @@ class Unit
                 }
             }
 
-            $labelMap = static::getUnitsByLabel();
+            $labelMap = UnitMap\Label::get();
             foreach ($labelMap as $type => $typeLabels) {
                 // If this method is not called from the Unit class,
                 // then skip all other unit types
@@ -327,8 +327,6 @@ class Unit
             throw new InvocationException([self::class]);
         }
 
-        $factorMap = static::getFactorMap();
-
         $classType = gettype($value);
 
         if ($classType === 'integer' || $classType === 'double') {
@@ -339,8 +337,10 @@ class Unit
             throw new InvalidArgumentException('$value should be an integer, float or Unit instance');
         }
 
-        if (is_array($factorMap[static::TYPE])) {
-            foreach ($factorMap[static::TYPE] as $unitClass => $unitBaseValue) {
+        $factorMap = UnitMap\Factor::byType(static::TYPE);
+
+        if (is_array($factorMap)) {
+            foreach ($factorMap as $unitClass => $unitBaseValue) {
                 if ($system === null || (new $unitClass) instanceof $system) {
                     if ($baseValue < 0.9 * $unitBaseValue) {
                         if (!isset($lastUnitClass)) {
@@ -445,125 +445,6 @@ class Unit
 
             return sprintf($format, $this->getValue());
         }
-    }
-
-    /**
-     * @return string[]
-     */
-    public static function getBaseUnits()
-    {
-        static $typeMap = [];
-
-        if (empty($typeMap)) {
-            $typeRegistry = new TypeRegistry();
-            $typeRegistry->loadDirectory(__DIR__ . '/Unit/', __NAMESPACE__ . '\\Unit\\', '*.php');
-            $types = array_filter($typeRegistry->getTypes(), function ($type) {
-                return is_a($type, Unit::class, true);
-            });
-
-            foreach ($types as $type) {
-                /** @var Unit $typeObject */
-                $typeObject = new $type();
-                $typeMap[$typeObject::TYPE] = $typeObject;
-            }
-        }
-
-        return $typeMap;
-    }
-
-    /**
-     * @return array
-     */
-    private static function getFactorMap()
-    {
-        static $factorMap = [];
-
-        if (empty($factorMap)) {
-            foreach (self::getUnitTypes() as $type) {
-                /** @var Unit $unitObject */
-                $unitObject = new $type(1);
-
-                if (!array_key_exists($unitObject::TYPE, $factorMap)) {
-                    $factorMap[$unitObject::TYPE] = [];
-                }
-
-                $factorMap[$unitObject::TYPE][$type] = $unitObject->toBaseValue();
-            }
-
-            foreach ($factorMap as &$factors) {
-                asort($factors);
-            }
-        }
-
-        return $factorMap;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getUnitsBySymbol()
-    {
-        static $symbolMap = [];
-
-        if (empty($symbolMap)) {
-            foreach (self::getUnitTypes() as $type) {
-                /** @var Unit $unitObject */
-                $unitObject = new $type();
-
-                if (!array_key_exists($unitObject::TYPE, $symbolMap)) {
-                    $symbolMap[$unitObject::TYPE] = [];
-                }
-
-                if (!empty($unitObject->getSymbol())) {
-                    $symbolMap[$unitObject::TYPE][$unitObject->getSymbol()] = $unitObject;
-                }
-            }
-        }
-
-        return $symbolMap;
-    }
-
-    /**
-     * @return array[]
-     */
-    public static function getUnitsByLabel()
-    {
-        static $labelMap = [];
-
-        if (empty($labelMap)) {
-            foreach (self::getUnitTypes() as $type) {
-                /** @var Unit $unitObject */
-                $unitObject = new $type();
-
-                if (!array_key_exists($unitObject::TYPE, $labelMap)) {
-                    $labelMap[$unitObject::TYPE] = [];
-                }
-
-                if (!empty($unitObject->getLabel())) {
-                    $labelMap[$unitObject::TYPE][$unitObject->getLabel()] = $unitObject;
-                }
-            }
-        }
-
-        return $labelMap;
-    }
-
-    /**
-     * @return string[]
-     */
-    public static function getUnitTypes()
-    {
-        static $unitTypes = [];
-
-        if (empty($unitTypes)) {
-            $typeRegistry = new TypeRegistry();
-            $typeRegistry->loadDirectory(__DIR__ . '/Unit/', __NAMESPACE__ . '\\Unit\\', '*/*.php');
-            $unitTypes = array_filter($typeRegistry->getTypes(), function ($type) {
-                return is_a($type, Unit::class, true);
-            });
-        }
-
-        return $unitTypes;
     }
 
     /**

@@ -82,7 +82,7 @@ class LengthTest extends TestCase
         $lengthUnit = new Length\Pica(1);
         $this->assertEquals('4.233 mm', Length\MilliMeter::from($lengthUnit)->format(3));
     }
-    
+
     public function testFromFathom()
     {
         $lengthUnit = new Length\Fathom(1);

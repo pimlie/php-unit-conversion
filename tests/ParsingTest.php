@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use PhpUnitConversion\Exception\UnsupportedConversionException;
 use PhpUnitConversion\Unit;
 use PhpUnitConversion\UnitType;
+use PhpUnitConversion\Map as UnitMap;
 
 class ParsingTest extends TestCase
 {
@@ -21,6 +22,7 @@ class ParsingTest extends TestCase
         $unit = new $unitClass();
         $target = 9384 . ' ' . $unit->getSymbol();
         /** @var Unit $result */
+
         $result = $baseClass::from($target);
         $this->assertInstanceOf($unitClass, $result);
         $this->assertEquals($result->getValue(), 9384.);
@@ -83,11 +85,9 @@ class ParsingTest extends TestCase
      */
     public function getUnitClassesWithSymbols()
     {
-        foreach (Unit::getUnitsBySymbol() as $unitType => $typesBySymbol) {
-            foreach ($typesBySymbol as $symbol => $unit) {
-                $type = get_class($unit);
-                $baseType = get_class(Unit::getBaseUnits()[$unitType]);
-                yield $this->getDescription($type) . ' as ' . $symbol => [$baseType, $type];
+        foreach (UnitMap\Symbol::get() as $unitTypeClass => $units) {
+            foreach ($units as $symbol => $unitClass) {
+                yield $this->getDescription($unitClass) . ' as ' . $symbol => [$unitClass::BASE_UNIT, $unitClass];
             }
         }
     }
@@ -97,11 +97,9 @@ class ParsingTest extends TestCase
      */
     public function getUnitClassesWithLabels()
     {
-        foreach (Unit::getUnitsByLabel() as $unitType => $typesByLabel) {
-            foreach ($typesByLabel as $label => $unit) {
-                $type = get_class($unit);
-                $baseType = get_class(Unit::getBaseUnits()[$unitType]);
-                yield $this->getDescription($type) . ' as ' . $label => [$baseType, $type];
+        foreach (UnitMap\Label::get() as $unitTypeClass => $units) {
+            foreach ($units as $label => $unitClass) {
+                yield $this->getDescription($unitClass) . ' as ' . $label => [$unitClass::BASE_UNIT, $unitClass];
             }
         }
     }

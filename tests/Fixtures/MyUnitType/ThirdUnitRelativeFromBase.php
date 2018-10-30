@@ -9,7 +9,7 @@ class ThirdUnitRelativeFromBase extends MyUnitType
     use HasFactor;
 
     const FACTOR = 1/3;
-    
+
     const SYMBOL = 'tu';
     const LABEL = 'thirds unit';
 }

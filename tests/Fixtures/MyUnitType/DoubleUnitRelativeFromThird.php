@@ -8,7 +8,7 @@ class DoubleUnitRelativeFromThird extends ThirdUnitRelativeFromBase
     use HasRelativeFactor;
 
     const FACTOR = 6;
-    
+
     const SYMBOL = 'durt';
     const LABEL = 'double unit relative from third';
 }

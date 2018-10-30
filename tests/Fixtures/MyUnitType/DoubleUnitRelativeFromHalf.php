@@ -8,7 +8,7 @@ class DoubleUnitRelativeFromHalf extends HalfUnit
     use HasRelativeFactor;
 
     const FACTOR = 4;
-    
+
     const SYMBOL = 'durh';
     const LABEL = 'double unit relative from half';
 }

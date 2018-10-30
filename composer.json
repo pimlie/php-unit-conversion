@@ -43,7 +43,7 @@
         }
     },
     "scripts": {
-        "cs": "vendor/bin/phpcs src/*",
+        "cs": "vendor/bin/phpcs src/* tests/*",
         "test:standard": "vendor/bin/phpunit --testsuite Standard_Tests",
         "test:all": "vendor/bin/phpunit"
     }

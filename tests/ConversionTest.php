@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use PhpUnitConversion\Exception\UnsupportedConversionException;
 use PhpUnitConversion\Unit;
 use PhpUnitConversion\UnitType;
+use PhpUnitConversion\Map as UnitMap;
 
 class ConversionTest extends TestCase
 {
@@ -58,9 +59,7 @@ class ConversionTest extends TestCase
     public function getUnitClassesWithMatchingTypes()
     {
         foreach (UnitType::values() as $unitType) {
-            $unitTypes = array_filter(Unit::getUnitTypes(), function ($unitClass) use ($unitType) {
-                return $unitType->getValue() === $unitClass::TYPE;
-            });
+            $unitTypes = UnitMap\Unit::byType($unitType->getValue());
 
             foreach ($unitTypes as $left) {
                 foreach ($unitTypes as $right) {
@@ -76,10 +75,8 @@ class ConversionTest extends TestCase
     public function getUnitClassesWithNonMatchingTypes()
     {
         foreach (UnitType::values() as $unitType) {
-            $matchingUnitTypes = array_filter(Unit::getUnitTypes(), function ($unitClass) use ($unitType) {
-                return $unitType->getValue() === $unitClass::TYPE;
-            });
-            $nonMatchingUnitTypes = array_filter(Unit::getUnitTypes(), function ($unitClass) use ($unitType) {
+            $matchingUnitTypes = UnitMap\Unit::byType($unitType->getValue());
+            $nonMatchingUnitTypes = array_filter(UnitMap\Unit::get(), function ($unitClass) use ($unitType) {
                 return $unitType->getValue() !== $unitClass::TYPE;
             });
 

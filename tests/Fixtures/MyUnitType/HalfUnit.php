@@ -9,7 +9,7 @@ class HalfUnit extends MyUnitType
     use HasFactor;
 
     const FACTOR = 0.5;
-    
+
     const SYMBOL = 'hu';
     const LABEL = 'half unit';
 }
