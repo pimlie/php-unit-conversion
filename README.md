@@ -176,7 +176,7 @@ $addGrams = $massUnit->add(new Time\Second(60) );
 ```
 
 ## Adding custom units
-```
+```php
 use PhpUnitConversion\Map as UnitMap;
 
 /* You can add custom units by calling the add method on UnitMap.
