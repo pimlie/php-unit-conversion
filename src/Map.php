@@ -1,7 +1,7 @@
 <?php
 namespace PhpUnitConversion;
 
-use PhpUnitConversion\Unit;
+use PhpUnitConversion;
 
 abstract class Map
 {
@@ -11,12 +11,16 @@ abstract class Map
     protected static $paths = [[__DIR__ . '/Unit/', __NAMESPACE__ . '\\Unit', false, null]];
 
      /** @var array */
-    public static $map = [];
+    protected static $map = [];
 
      /** @var array */
-    public static $values = [];
+    protected static $values = [];
 
-    public static function &value($mapType)
+    /**
+     * @param string $mapType
+     * @return array
+     */
+    protected static function &value($mapType)
     {
         return static::$values[$mapType];
     }
@@ -35,10 +39,18 @@ abstract class Map
     /**
      * @return void
      */
+    public static function resetValues()
+    {
+        self::$values = [];
+    }
+
+    /**
+     * @return void
+     */
     public static function reset()
     {
         self::$map = [];
-        self::$values = [];
+        self::resetValues();
     }
 
     /**
@@ -61,6 +73,8 @@ abstract class Map
                 if (self::loadPath($path, $namespace, $unitType)) {
                     self::$paths[$k][2] = true;
                     $newlyLoaded = true;
+
+                    self::resetValues();
                 }
             }
         }
@@ -72,7 +86,7 @@ abstract class Map
      * @param string $namespace
      * @return string
      */
-    public static function loadPath($path, $namespace = '', $unitType = '')
+    protected static function loadPath($path, $namespace = '', $unitType = '')
     {
         if (is_file($path)) {
             $classes = self::loadFile($path, $namespace);
@@ -94,7 +108,7 @@ abstract class Map
      * @param string $namespace
      * @return array
      */
-    public static function loadDirectory($directory, $namespace = '')
+    protected static function loadDirectory($directory, $namespace = '')
     {
         $classes = [];
         foreach (glob($directory . '/*' . self::PHP_EXTENSION) as $file) {
@@ -114,7 +128,7 @@ abstract class Map
      * @param string $namespace
      * @return string|array
      */
-    public static function loadFile($file, $namespace = '')
+    protected static function loadFile($file, $namespace = '')
     {
         if (file_exists($file)) {
             $fileName = basename($file, self::PHP_EXTENSION);
