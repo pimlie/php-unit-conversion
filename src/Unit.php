@@ -13,7 +13,7 @@ class Unit
     protected $value;
 
     /** @var int */
-    static protected $bitShift = 6;
+    protected static $bitShift = 6;
 
     /**
      * @param float $value
