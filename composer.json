@@ -1,17 +1,17 @@
 {
-    "name":        "php-unit-conversion/php-unit-conversion",
+    "name":        "cpave3/php-unit-conversion",
     "description": "A fully PSR-4 compatible PHP library for converting between standard units of measure.",
     "keywords": [
          "measurement", "unit", "conversion"
      ],
-    "homepage":    "https://github.com/pimlie/php-unit-conversion",
+    "homepage":    "https://github.com/cpave3/php-unit-conversion",
     "license": "MIT",
     "type": "library",
     "authors": [
         {
-            "name":     "pimlie",
-            "email":    "pimlie@hotmail.com",
-            "homepage": "https://github.com/pimlie/",
+            "name":     "Cameron",
+            "email":    "cpave3@gmail.com",
+            "homepage": "https://github.com/cpave3/",
             "role":     "Developer"
         }
     ],
@@ -19,9 +19,9 @@
         "process-timeout": 0
     },
     "support": {
-        "email":  "pimlie@hotmail.com",
-        "issues": "https://github.com/pimlie/php-unit-conversion/issues",
-        "source": "https://github.com/pimlie/php-unit-conversion"
+        "email":  "cpave3@gmail.com",
+        "issues": "https://github.com/cpave3/php-unit-conversion/issues",
+        "source": "https://github.com/cpave3/php-unit-conversion"
     },
     "require": {
         "php": ">=5.6.0",
