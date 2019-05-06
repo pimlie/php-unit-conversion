@@ -31,9 +31,9 @@ class VelocityTest extends TestCase
         $this->assertEquals('44704 m/s', Velocity\MeterPerSecond::from($volumeUnit)->format(0));
     }
 
-    public function testFromKilometresPerHour()
+    public function testFromKiloMetersPerHour()
     {
-        $volumeUnit = new Velocity\KilometrePerHour(100000);
+        $volumeUnit = new Velocity\KiloMeterPerHour(100000);
         $this->assertEquals('27777.78 m/s', Velocity\MeterPerSecond::from($volumeUnit)->format(2));
     }
 
@@ -72,5 +72,4 @@ class VelocityTest extends TestCase
         $volumeUnit = new Velocity\MilePerMinute(100000);
         $this->assertEquals('2682240.00 m/s', Velocity\MeterPerSecond::from($volumeUnit)->format(2));
     }
-
 }
