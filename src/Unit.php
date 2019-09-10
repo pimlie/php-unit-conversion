@@ -435,17 +435,17 @@ class Unit
     public function format($precision = 3, $addSymbol = true)
     {
         $format = '%02.' . $precision . 'f';
-        
+
         if (!$addSymbol) {
             return sprintf($format, $this->getValue());
         }
-        
+
         $symbol = $this->getSymbol();
 
         if (empty($symbol)) {
             return sprintf($format, $this->getValue());
         }
-        
+
         $format .= ' %s';
         return sprintf($format, $this->getValue(), $symbol);
     }
