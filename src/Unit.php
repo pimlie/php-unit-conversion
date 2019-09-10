@@ -434,17 +434,20 @@ class Unit
      */
     public function format($precision = 3, $addSymbol = true)
     {
-        $symbol = $this->getSymbol();
-
-        if (!empty($symbol)) {
-            $format = '%02.' . $precision . 'f %s';
-
-            return sprintf($format, $this->getValue(), $symbol);
-        } else {
-            $format = '%02.' . $precision . 'f';
-
+        $format = '%02.' . $precision . 'f';
+        
+        if (!$addSymbol) {
             return sprintf($format, $this->getValue());
         }
+        
+        $symbol = $this->getSymbol();
+
+        if (empty($symbol)) {
+            return sprintf($format, $this->getValue());
+        }
+        
+        $format .= ' %s';
+        return sprintf($format, $this->getValue(), $symbol);
     }
 
     /**
