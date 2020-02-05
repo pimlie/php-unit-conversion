@@ -434,7 +434,7 @@ class Unit
      */
     public function format($precision = 3, $addSymbol = true)
     {
-        $format = '%02.' . $precision . 'f';
+        $format = '%.' . $precision . 'f';
 
         if (!$addSymbol) {
             return sprintf($format, $this->getValue());
