@@ -21,6 +21,12 @@ class LengthTest extends TestCase
         $lengthUnit = new Length\Foot(1);
         $this->assertEquals('0.3048 m', Length\Meter::from($lengthUnit)->format(4));
     }
+    public function testFromFootAnother()
+    {
+        $lengthUnit = new Length\Foot(136043.25);
+        $lengthUnitTo = new Length\Meter();
+        $this->assertEquals('41465.9826 m', $lengthUnit->to($lengthUnitTo)->format(4));
+    }
     public function testFromYard()
     {
         $lengthUnit = new Length\Yard(1);
