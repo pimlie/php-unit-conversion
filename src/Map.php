@@ -88,6 +88,8 @@ abstract class Map
      */
     protected static function loadPath($path, $namespace = '', $unitType = '')
     {
+        $classes = [];
+
         if (is_file($path)) {
             $classes = self::loadFile($path, $namespace);
 
@@ -98,7 +100,7 @@ abstract class Map
             $classes = self::loadDirectory($path, $namespace);
         }
 
-        self::$map = self::$map + $classes;
+        self::$map = array_merge_recursive(self::$map, $classes);
 
         return count($classes) > 0;
     }
