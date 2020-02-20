@@ -3,6 +3,7 @@ namespace PhpUnitConversionTest;
 
 use PHPUnit\Framework\TestCase;
 use PhpUnitConversion\Exception;
+use PhpUnitConversion\Map\Factor;
 use PhpUnitConversion\Unit;
 use PhpUnitConversion\Map as UnitMap;
 use PhpUnitConversion\Unit\Mass;
@@ -183,5 +184,29 @@ class UnitTest extends TestCase
         $unit = Mass::nearest(1);
 
         $this->assertInstanceOf(Mass\Gram::class, $unit);
+    }
+
+    public function testMultipleCustomUnits()
+    {
+        UnitMap::clear();
+        UnitMap::add(__DIR__ . '/../src/Unit/Length/Meter.php', 'PhpUnitConversion\\Unit\\Length', Unit\Length::class);
+        UnitMap::add(__DIR__ . '/../src/Unit/Length/CentiMeter.php', 'PhpUnitConversion\\Unit\\Length', Unit\Length::class);
+
+        UnitMap::add(__DIR__ . '/../src/Unit/Mass/KiloGram.php', 'PhpUnitConversion\\Unit\\Mass', Unit\Mass::class);
+        UnitMap::add(__DIR__ . '/../src/Unit/Mass/Gram.php', 'PhpUnitConversion\\Unit\\Mass', Unit\Mass::class);
+
+        $lengthUnits = Factor::byType(Unit\Length::TYPE);
+        $this->assertCount(2, $lengthUnits);
+        $this->assertArrayHasKey(Unit\Length\CentiMeter::class, $lengthUnits);
+        $this->assertArrayHasKey(Unit\Length\Meter::class, $lengthUnits);
+        $this->assertSame(Unit\Length\CentiMeter::FACTOR, $lengthUnits[Unit\Length\CentiMeter::class]);
+        $this->assertSame(1, $lengthUnits[Unit\Length\Meter::class]);
+
+        $lengthUnits = Factor::byType(Unit\Mass::TYPE);
+        $this->assertCount(2, $lengthUnits);
+        $this->assertArrayHasKey(Unit\Mass\KiloGram::class, $lengthUnits);
+        $this->assertArrayHasKey(Unit\Mass\Gram::class, $lengthUnits);
+        $this->assertSame(Unit\Mass\KiloGram::FACTOR, $lengthUnits[Unit\Mass\KiloGram::class]);
+        $this->assertSame(1, $lengthUnits[Unit\Mass\Gram::class]);
     }
 }
