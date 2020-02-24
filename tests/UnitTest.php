@@ -208,5 +208,6 @@ class UnitTest extends TestCase
         $this->assertArrayHasKey(Unit\Mass\Gram::class, $lengthUnits);
         $this->assertSame(Unit\Mass\KiloGram::FACTOR, $lengthUnits[Unit\Mass\KiloGram::class]);
         $this->assertSame(1, $lengthUnits[Unit\Mass\Gram::class]);
+        UnitMap::add(__DIR__.'/../src/Unit', 'PhpUnitConversion\\Unit', null);
     }
 }
