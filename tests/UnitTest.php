@@ -62,7 +62,7 @@ class UnitTest extends TestCase
             count($allUnits),
             $this->logicalOr(
                 $this->equalTo(9),
-                $this->equalTo(232)
+                $this->equalTo(247)
             )
         );
 
