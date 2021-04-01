@@ -15,4 +15,5 @@ class UnitType extends Enum
     const TEMPERATURE = 6;
     const AMOUNT = 7;
     const VELOCITY = 8;
+    const PRESSURE = 9;
 }
