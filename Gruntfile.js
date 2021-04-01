@@ -31,12 +31,14 @@ module.exports = function(grunt) {
         fileExt = '.php',
         baseUnits = {},
         units = [
-            { unit: 'Mass',   base: 1, relative: 0, symbol: 'g', label: 'gram', prefix: '' }, 
-            { unit: 'Length', base: 1, relative: 0, symbol: 'm', label: 'meter', prefix: '' }, 
-            { unit: 'Area',   base: 1, relative: 0, symbol: 'm', label: 'meter', prefix: 'Square' },
-            { unit: 'Volume', base: 1, relative: 0, symbol: 'm', label: 'meter', prefix: 'Cubic' },
-            { unit: 'Volume', base: 1, relative: 1, symbol: 'l', label: 'liter', prefix: '' },
-            { unit: 'Amount', base: 1, relative: 1, symbol: 'mol', label: 'mole', prefix: '' },
+            { unit: 'Mass',     base: 1, relative: 0, symbol: 'g',  label: 'gram', prefix: '' }, 
+            { unit: 'Length',   base: 1, relative: 0, symbol: 'm',  label: 'meter', prefix: '' }, 
+            { unit: 'Area',     base: 1, relative: 0, symbol: 'm',  label: 'meter', prefix: 'Square' },
+            { unit: 'Volume',   base: 1, relative: 0, symbol: 'm',  label: 'meter', prefix: 'Cubic' },
+            { unit: 'Volume',   base: 1, relative: 1, symbol: 'l',  label: 'liter', prefix: '' },
+            { unit: 'Amount',   base: 1, relative: 1, symbol: 'mol',  label: 'mole', prefix: '' },
+            { unit: 'Pressure', base: 1, relative: 0, symbol: 'Pa', label: 'pascal', prefix: '' },
+            { unit: 'Pressure', base: 1, relative: 1, symbol: 'bar', label: 'bar', prefix: '' },
          ];
     phpTemplate = `<?php
 namespace PhpUnitConversion\\Unit\\<%= unit %>;
