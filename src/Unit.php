@@ -1,13 +1,14 @@
 <?php
 namespace PhpUnitConversion;
 
+use JsonSerializable;
 use InvalidArgumentException;
 use PhpUnitConversion\Map as UnitMap;
 use PhpUnitConversion\Exception\InvocationException;
 use PhpUnitConversion\Exception\UnsupportedUnitException;
 use PhpUnitConversion\Exception\UnsupportedConversionException;
 
-class Unit
+class Unit implements JsonSerializable
 {
     /** @var float */
     protected $value;
@@ -466,5 +467,17 @@ class Unit
     {
         $symbol = $this->getSymbol();
         return (string)$this->getValue() . ($symbol ? ' ' . $symbol : '');
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'value' => $this->getValue(),
+            'symbol' => $this->getSymbol(),
+            'label' => $this->getLabel(),
+        ];
     }
 }
