@@ -108,6 +108,20 @@ class UnitTest extends TestCase
         $this->assertEquals('1 u', (string)$unit);
     }
 
+    public function testToJson()
+    {
+        $unit = new MyUnitType\OneUnit(1);
+
+        $expected = [
+            'value' => 1,
+            'symbol' => 'u',
+            'label' => 'unit',
+        ];
+
+        $this->assertEquals($expected, $unit->jsonSerialize());
+        $this->assertEquals(json_encode($expected), json_encode($unit));
+    }
+
     public function testInvalidInvocation()
     {
         $this->expectException(Exception::class);
